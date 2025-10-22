@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0051a5 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -43,7 +43,7 @@
         }
 
         .auth-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0051a5 0%, #764ba2 100%);
             padding: 2.5rem 2rem;
             text-align: center;
             color: white;
@@ -101,14 +101,14 @@
         }
 
         .tab-button.active {
-            background: #667eea;
+            background: #0051a5;
             color: white;
-            border-color: #667eea;
+            border-color: #0051a5;
         }
 
         .tab-button:hover:not(.active) {
-            border-color: #667eea;
-            color: #667eea;
+            border-color: #0051a5;
+            color: #0051a5;
         }
 
         .form-container {
@@ -153,7 +153,7 @@
 
         .form-group input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #0051a5;
         }
 
         .form-group input.error {
@@ -206,7 +206,7 @@
         .submit-button {
             width: 100%;
             padding: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0051a5 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 10px;
@@ -264,7 +264,7 @@
         }
 
         .google-button:hover {
-            border-color: #667eea;
+            border-color: #0051a5;
             background: #f8f9fa;
         }
 
@@ -282,7 +282,7 @@
         }
 
         .terms a {
-            color: #667eea;
+            color: #0051a5;
             text-decoration: none;
             font-weight: 500;
         }

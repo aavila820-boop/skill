@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkillLink - Buscar Mentores</title>
+    <title>SkillLink UNAB - Buscar Mentores Plan Padrino</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -48,9 +48,17 @@
         .logo-text {
             font-size: 24px;
             font-weight: bold;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #0051a5, #003d7a);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .unab-badge {
+            font-size: 11px;
+            color: #666;
+            font-weight: 600;
+            display: block;
+            margin-top: -5px;
         }
 
         .header-nav {
@@ -68,19 +76,68 @@
         }
 
         .nav-link:hover {
-            color: #667eea;
+            color: #0051a5;
             background: #f3f4f6;
         }
 
         .nav-link.active {
-            color: #667eea;
-            background: #ede9fe;
+            color: #0051a5;
+            background: #e3f2fd;
         }
 
         /* Container Principal */
         .container {
             max-width: 1400px;
             margin: 0 auto;
+        }
+
+        /* Banner Plan Padrino */
+        .plan-padrino-banner {
+            background: linear-gradient(135deg, #0051a5, #0066cc);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .banner-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .banner-text h2 {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .banner-text p {
+            font-size: 15px;
+            opacity: 0.95;
+        }
+
+        .banner-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat-box {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px 20px;
+            border-radius: 12px;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .stat-text {
+            font-size: 12px;
+            opacity: 0.9;
         }
 
         /* Sección de Búsqueda y Filtros */
@@ -133,8 +190,8 @@
 
         .search-input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            border-color: #0051a5;
+            box-shadow: 0 0 0 4px rgba(0, 81, 165, 0.1);
         }
 
         .search-icon {
@@ -148,7 +205,7 @@
 
         .btn-search {
             padding: 15px 35px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #0051a5, #003d7a);
             color: white;
             border: none;
             border-radius: 12px;
@@ -161,7 +218,7 @@
 
         .btn-search:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 20px rgba(0, 81, 165, 0.4);
         }
 
         /* Filtros */
@@ -197,7 +254,7 @@
 
         .filter-select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #0051a5;
         }
 
         .filter-tags {
@@ -209,8 +266,8 @@
 
         .filter-tag {
             padding: 8px 16px;
-            background: #ede9fe;
-            color: #667eea;
+            background: #e3f2fd;
+            color: #0051a5;
             border-radius: 20px;
             font-size: 14px;
             font-weight: 600;
@@ -222,7 +279,7 @@
         }
 
         .filter-tag:hover {
-            background: #667eea;
+            background: #0051a5;
             color: white;
         }
 
@@ -266,8 +323,8 @@
 
         .mentor-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
-            border-color: #667eea;
+            box-shadow: 0 15px 40px rgba(0, 81, 165, 0.3);
+            border-color: #0051a5;
         }
 
         .mentor-header {
@@ -281,7 +338,7 @@
             height: 80px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #667eea;
+            border: 3px solid #0051a5;
         }
 
         .mentor-info {
@@ -296,10 +353,26 @@
         }
 
         .mentor-title {
-            color: #667eea;
+            color: #0051a5;
             font-weight: 600;
             font-size: 14px;
             margin-bottom: 8px;
+        }
+
+        .mentor-type-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #fef3c7;
+            color: #92400e;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .mentor-type-badge.profesor {
+            background: #dbeafe;
+            color: #1e40af;
         }
 
         .mentor-rating {
@@ -333,14 +406,14 @@
             overflow: hidden;
         }
 
-        .mentor-skills {
+        .mentor-subjects {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             margin-bottom: 15px;
         }
 
-        .skill-badge {
+        .subject-badge {
             padding: 6px 12px;
             background: #f3f4f6;
             border-radius: 15px;
@@ -365,7 +438,7 @@
         .stat-value {
             font-size: 18px;
             font-weight: bold;
-            color: #667eea;
+            color: #0051a5;
         }
 
         .stat-label {
@@ -374,27 +447,32 @@
             margin-top: 3px;
         }
 
-        .mentor-price {
+        .mentor-availability {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 15px;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 10px;
         }
 
-        .price-label {
+        .availability-label {
             color: #6b7280;
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 600;
         }
 
-        .price-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1f2937;
-        }
-
-        .price-period {
-            font-size: 14px;
-            color: #9ca3af;
+        .free-badge {
+            padding: 6px 14px;
+            background: #d1fae5;
+            color: #065f46;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .mentor-actions {
@@ -405,7 +483,7 @@
         .btn-schedule {
             flex: 1;
             padding: 12px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #0051a5, #003d7a);
             color: white;
             border: none;
             border-radius: 10px;
@@ -417,7 +495,7 @@
 
         .btn-schedule:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 15px rgba(0, 81, 165, 0.4);
         }
 
         .btn-profile {
@@ -436,7 +514,7 @@
             background: #e5e7eb;
         }
 
-        .availability-badge {
+        .availability-status {
             display: inline-flex;
             align-items: center;
             gap: 5px;
@@ -504,6 +582,15 @@
                 flex-wrap: wrap;
             }
 
+            .banner-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .banner-stats {
+                justify-content: center;
+            }
+
             .search-bar-container {
                 flex-direction: column;
             }
@@ -530,29 +617,56 @@
     <!-- Header -->
     <div class="header">
         <div class="logo-container">
-            <img src="./images/uwu2.jpeg" alt="SkillLink Logo" class="logo">
-            <div class="logo-text">SkillLink</div>
+            <img src="./images/uwu2.jpeg" alt="SkillLink UNAB Logo" class="logo">
+            <div>
+                <div class="logo-text">SkillLink UNAB</div>
+                <span class="unab-badge">Plan Padrino Digital</span>
+            </div>
         </div>
         <nav class="header-nav">
             <a href="#" class="nav-link">Inicio</a>
             <a href="#" class="nav-link active">Buscar Mentores</a>
-            <a href="#" class="nav-link">Mis Mentorías</a>
+            <a href="#" class="nav-link">Mis Tutorías</a>
             <a href="#" class="nav-link">Mi Perfil</a>
         </nav>
     </div>
 
     <div class="container">
+        <!-- Banner Plan Padrino -->
+        <div class="plan-padrino-banner">
+            <div class="banner-content">
+                <div class="banner-text">
+                    <h2>🤝 Plan Padrino UNAB</h2>
+                    <p>Acompañamiento académico solidario entre estudiantes y profesores</p>
+                </div>
+                <div class="banner-stats">
+                    <div class="stat-box">
+                        <div class="stat-number">52</div>
+                        <div class="stat-text">Mentores activos</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">340+</div>
+                        <div class="stat-text">Tutorías realizadas</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-text">Gratuito</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Sección de Búsqueda y Filtros -->
         <div class="search-section">
             <div class="search-header">
-                <h1 class="search-title">🔍 Encuentra tu Mentor Ideal</h1>
-                <span class="results-count">148 mentores disponibles</span>
+                <h1 class="search-title">🔍 Encuentra tu Mentor UNAB</h1>
+                <span class="results-count">52 mentores disponibles</span>
             </div>
 
             <!-- Barra de Búsqueda -->
             <div class="search-bar-container">
                 <div class="search-input-wrapper">
-                    <input type="text" class="search-input" placeholder="Busca por nombre, habilidad o especialidad..." id="searchInput">
+                    <input type="text" class="search-input" placeholder="Busca por nombre, materia o facultad..." id="searchInput">
                     <span class="search-icon">🔍</span>
                 </div>
                 <button class="btn-search">Buscar</button>
@@ -561,47 +675,48 @@
             <!-- Filtros -->
             <div class="filters-container">
                 <div class="filter-group">
-                    <label class="filter-label">Categoría</label>
-                    <select class="filter-select" id="categoryFilter">
-                        <option value="">Todas las categorías</option>
-                        <option value="tech">Tecnología</option>
-                        <option value="business">Negocios</option>
-                        <option value="marketing">Marketing</option>
-                        <option value="design">Diseño</option>
-                        <option value="finance">Finanzas</option>
+                    <label class="filter-label">Facultad</label>
+                    <select class="filter-select" id="facultyFilter">
+                        <option value="">Todas las facultades</option>
+                        <option value="ingenieria">Ingeniería</option>
+                        <option value="administracion">Administración</option>
+                        <option value="derecho">Derecho</option>
+                        <option value="ciencias-salud">Ciencias de la Salud</option>
+                        <option value="comunicacion">Comunicación</option>
+                        <option value="educacion">Educación</option>
                     </select>
                 </div>
 
                 <div class="filter-group">
-                    <label class="filter-label">Experiencia</label>
-                    <select class="filter-select" id="experienceFilter">
-                        <option value="">Cualquier nivel</option>
-                        <option value="junior">Junior (1-3 años)</option>
-                        <option value="mid">Mid (3-5 años)</option>
-                        <option value="senior">Senior (5-10 años)</option>
-                        <option value="expert">Expert (10+ años)</option>
+                    <label class="filter-label">Tipo de Mentor</label>
+                    <select class="filter-select" id="mentorTypeFilter">
+                        <option value="">Todos</option>
+                        <option value="estudiante">Estudiante Avanzado</option>
+                        <option value="profesor">Profesor</option>
                     </select>
                 </div>
 
                 <div class="filter-group">
-                    <label class="filter-label">Precio por hora</label>
-                    <select class="filter-select" id="priceFilter">
-                        <option value="">Cualquier precio</option>
-                        <option value="0-50">$0 - $50</option>
-                        <option value="50-100">$50 - $100</option>
-                        <option value="100-200">$100 - $200</option>
-                        <option value="200+">$200+</option>
+                    <label class="filter-label">Materia</label>
+                    <select class="filter-select" id="subjectFilter">
+                        <option value="">Todas las materias</option>
+                        <option value="calculo">Cálculo</option>
+                        <option value="fisica">Física</option>
+                        <option value="programacion">Programación</option>
+                        <option value="quimica">Química</option>
+                        <option value="estadistica">Estadística</option>
+                        <option value="ingles">Inglés</option>
+                        <option value="contabilidad">Contabilidad</option>
                     </select>
                 </div>
 
                 <div class="filter-group">
-                    <label class="filter-label">Idioma</label>
-                    <select class="filter-select" id="languageFilter">
-                        <option value="">Todos los idiomas</option>
-                        <option value="es">Español</option>
-                        <option value="en">Inglés</option>
-                        <option value="pt">Portugués</option>
-                        <option value="fr">Francés</option>
+                    <label class="filter-label">Modalidad</label>
+                    <select class="filter-select" id="modalityFilter">
+                        <option value="">Todas</option>
+                        <option value="presencial">Presencial (Campus)</option>
+                        <option value="virtual">Virtual</option>
+                        <option value="hibrido">Híbrido</option>
                     </select>
                 </div>
             </div>
@@ -614,482 +729,161 @@
 
         <!-- Grid de Mentores -->
         <div class="mentors-grid" id="mentorsGrid">
-            <!-- Mentor 1 -->
+            <!-- Mentor 1 - Estudiante -->
             <div class="mentor-card">
                 <div class="mentor-header">
-                    <img src="https://ui-avatars.com/api/?name=Juan+Garcia&size=80&background=667eea&color=fff&bold=true" alt="Juan García" class="mentor-avatar">
+                    <img src="https://ui-avatars.com/api/?name=Carlos+Mendoza&size=80&background=0051a5&color=fff&bold=true" alt="Carlos Mendoza" class="mentor-avatar">
                     <div class="mentor-info">
-                        <h3 class="mentor-name">Juan García</h3>
-                        <p class="mentor-title">💼 CEO & Growth Expert</p>
-                        <div class="mentor-rating">
-                            <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <span class="rating-number">4.9</span>
-                            <span class="reviews-count">(127 reseñas)</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="mentor-bio">
-                    Emprendedor serial con más de 15 años de experiencia. He fundado y escalado 4 startups exitosas. Especializado en estrategias de crecimiento y captación de inversión.
-                </p>
-                <div class="mentor-skills">
-                    <span class="skill-badge">Growth Hacking</span>
-                    <span class="skill-badge">Fundraising</span>
-                    <span class="skill-badge">Estrategia</span>
-                </div>
-                <div class="mentor-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">250+</div>
-                        <div class="stat-label">Sesiones</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">15</div>
-                        <div class="stat-label">Años exp.</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">98%</div>
-                        <div class="stat-label">Satisfacción</div>
-                    </div>
-                </div>
-                <div class="mentor-price">
-                    <span class="price-label">Desde:</span>
-                    <div>
-                        <span class="price-value">$120</span>
-                        <span class="price-period">/hora</span>
-                    </div>
-                </div>
-                <span class="availability-badge">
-                    <span class="availability-dot"></span>
-                    Disponible hoy
-                </span>
-                <div class="mentor-actions">
-                    <button class="btn-schedule">📅 Agendar Sesión</button>
-                    <button class="btn-profile">Ver Perfil</button>
-                </div>
-            </div>
-
-            <!-- Mentor 2 -->
-            <div class="mentor-card">
-                <div class="mentor-header">
-                    <img src="https://ui-avatars.com/api/?name=Ana+Martinez&size=80&background=764ba2&color=fff&bold=true" alt="Ana Martínez" class="mentor-avatar">
-                    <div class="mentor-info">
-                        <h3 class="mentor-name">Ana Martínez</h3>
-                        <p class="mentor-title">🎨 UX/UI Design Lead</p>
+                        <span class="mentor-type-badge">Estudiante - 8° Semestre</span>
+                        <h3 class="mentor-name">Carlos Mendoza</h3>
+                        <p class="mentor-title">📚 Ingeniería de Sistemas</p>
                         <div class="mentor-rating">
                             <span class="stars">⭐⭐⭐⭐⭐</span>
                             <span class="rating-number">5.0</span>
-                            <span class="reviews-count">(89 reseñas)</span>
+                            <span class="reviews-count">(24 tutorías)</span>
                         </div>
                     </div>
                 </div>
                 <p class="mentor-bio">
-                    Diseñadora con 10 años de experiencia en productos digitales. Ex-líder de diseño en Google y Airbnb. Apasionada por crear experiencias que impacten positivamente a millones.
+                    Estudiante destacado de Ingeniería de Sistemas con promedio de 4.5. Me apasiona compartir conocimiento y ayudar a mis compañeros de primeros semestres a superar las materias difíciles.
                 </p>
-                <div class="mentor-skills">
-                    <span class="skill-badge">UX Design</span>
-                    <span class="skill-badge">Product Design</span>
-                    <span class="skill-badge">Research</span>
+                <div class="mentor-subjects">
+                    <span class="subject-badge">Programación I-II</span>
+                    <span class="subject-badge">Estructuras de Datos</span>
+                    <span class="subject-badge">Algoritmos</span>
                 </div>
                 <div class="mentor-stats">
                     <div class="stat-item">
-                        <div class="stat-value">180+</div>
-                        <div class="stat-label">Sesiones</div>
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Tutorías</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">10</div>
-                        <div class="stat-label">Años exp.</div>
+                        <div class="stat-value">8°</div>
+                        <div class="stat-label">Semestre</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">100%</div>
-                        <div class="stat-label">Satisfacción</div>
+                        <div class="stat-value">4.5</div>
+                        <div class="stat-label">Promedio</div>
                     </div>
                 </div>
-                <div class="mentor-price">
-                    <span class="price-label">Desde:</span>
-                    <div>
-                        <span class="price-value">$95</span>
-                        <span class="price-period">/hora</span>
-                    </div>
+                <div class="mentor-availability">
+                    <span class="availability-label">📍 Modalidad:</span>
+                    <span>Presencial y Virtual</span>
                 </div>
-                <span class="availability-badge">
-                    <span class="availability-dot"></span>
-                    Disponible mañana
-                </span>
+                <div class="mentor-availability">
+                    <span class="availability-label">⏰ Disponibilidad:</span>
+                    <span class="availability-status">
+                        <span class="availability-dot"></span>
+                        Disponible esta semana
+                    </span>
+                </div>
+                <div class="mentor-availability">
+                    <span class="availability-label">💰 Costo:</span>
+                    <span class="free-badge">✨ GRATIS</span>
+                </div>
                 <div class="mentor-actions">
-                    <button class="btn-schedule">📅 Agendar Sesión</button>
+                    <button class="btn-schedule">📅 Solicitar Tutoría</button>
                     <button class="btn-profile">Ver Perfil</button>
                 </div>
             </div>
 
-            <!-- Mentor 3 -->
+            <!-- Mentor 2 - Profesora -->
             <div class="mentor-card">
                 <div class="mentor-header">
-                    <img src="https://ui-avatars.com/api/?name=Carlos+Lopez&size=80&background=10b981&color=fff&bold=true" alt="Carlos López" class="mentor-avatar">
+                    <img src="https://ui-avatars.com/api/?name=Maria+Rodriguez&size=80&background=003d7a&color=fff&bold=true" alt="María Rodríguez" class="mentor-avatar">
                     <div class="mentor-info">
-                        <h3 class="mentor-name">Carlos López</h3>
-                        <p class="mentor-title">💻 Senior Software Architect</p>
+                        <span class="mentor-type-badge profesor">Profesora</span>
+                        <h3 class="mentor-name">Dra. María Rodríguez</h3>
+                        <p class="mentor-title">🧮 Facultad de Ingeniería</p>
                         <div class="mentor-rating">
                             <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <span class="rating-number">4.8</span>
-                            <span class="reviews-count">(156 reseñas)</span>
+                            <span class="rating-number">4.9</span>
+                            <span class="reviews-count">(41 tutorías)</span>
                         </div>
                     </div>
                 </div>
                 <p class="mentor-bio">
-                    Arquitecto de software con 12 años construyendo sistemas escalables. Ex-tech lead en Amazon. Mentor de más de 100 desarrolladores que ahora trabajan en FAANG.
+                    Profesora de la UNAB con 12 años de experiencia. Disfruto apoyar a los estudiantes en su proceso de aprendizaje y superar las dificultades en matemáticas y cálculo.
                 </p>
-                <div class="mentor-skills">
-                    <span class="skill-badge">System Design</span>
-                    <span class="skill-badge">Cloud</span>
-                    <span class="skill-badge">Microservices</span>
+                <div class="mentor-subjects">
+                    <span class="subject-badge">Cálculo I-II-III</span>
+                    <span class="subject-badge">Álgebra Lineal</span>
+                    <span class="subject-badge">Ecuaciones Diferenciales</span>
                 </div>
                 <div class="mentor-stats">
                     <div class="stat-item">
-                        <div class="stat-value">300+</div>
-                        <div class="stat-label">Sesiones</div>
+                        <div class="stat-value">41</div>
+                        <div class="stat-label">Tutorías</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">12</div>
-                        <div class="stat-label">Años exp.</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">97%</div>
-                        <div class="stat-label">Satisfacción</div>
-                    </div>
-                </div>
-                <div class="mentor-price">
-                    <span class="price-label">Desde:</span>
-                    <div>
-                        <span class="price-value">$150</span>
-                        <span class="price-period">/hora</span>
-                    </div>
-                </div>
-                <span class="availability-badge">
-                    <span class="availability-dot"></span>
-                    Disponible hoy
-                </span>
-                <div class="mentor-actions">
-                    <button class="btn-schedule">📅 Agendar Sesión</button>
-                    <button class="btn-profile">Ver Perfil</button>
-                </div>
-            </div>
-
-            <!-- Mentor 4 -->
-            <div class="mentor-card">
-                <div class="mentor-header">
-                    <img src="https://ui-avatars.com/api/?name=Laura+Sanchez&size=80&background=f59e0b&color=fff&bold=true" alt="Laura Sánchez" class="mentor-avatar">
-                    <div class="mentor-info">
-                        <h3 class="mentor-name">Laura Sánchez</h3>
-                        <p class="mentor-title">📊 Marketing Strategy Director</p>
-                        <div class="mentor-rating">
-                            <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <span class="rating-number">4.9</span>
-                            <span class="reviews-count">(94 reseñas)</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="mentor-bio">
-                    Directora de marketing con 8 años liderando campañas globales. He ayudado a más de 50 startups a escalar sus estrategias digitales y alcanzar millones de usuarios.
-                </p>
-                <div class="mentor-skills">
-                    <span class="skill-badge">Digital Marketing</span>
-                    <span class="skill-badge">SEO/SEM</span>
-                    <span class="skill-badge">Branding</span>
-                </div>
-                <div class="mentor-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">200+</div>
-                        <div class="stat-label">Sesiones</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">8</div>
-                        <div class="stat-label">Años exp.</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">99%</div>
-                        <div class="stat-label">Satisfacción</div>
-                    </div>
-                </div>
-                <div class="mentor-price">
-                    <span class="price-label">Desde:</span>
-                    <div>
-                        <span class="price-value">$85</span>
-                        <span class="price-period">/hora</span>
-                    </div>
-                </div>
-                <span class="availability-badge">
-                    <span class="availability-dot"></span>
-                    Disponible hoy
-                </span>
-                <div class="mentor-actions">
-                    <button class="btn-schedule">📅 Agendar Sesión</button>
-                    <button class="btn-profile">Ver Perfil</button>
-                </div>
-            </div>
-
-            <!-- Mentor 5 -->
-            <div class="mentor-card">
-                <div class="mentor-header">
-                    <img src="https://ui-avatars.com/api/?name=Miguel+Torres&size=80&background=ef4444&color=fff&bold=true" alt="Miguel Torres" class="mentor-avatar">
-                    <div class="mentor-info">
-                        <h3 class="mentor-name">Miguel Torres</h3>
-                        <p class="mentor-title">💰 CFO & Finance Expert</p>
-                        <div class="mentor-rating">
-                            <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <span class="rating-number">5.0</span>
-                            <span class="reviews-count">(76 reseñas)</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="mentor-bio">
-                    CFO con 20 años de experiencia en finanzas corporativas. He liderado procesos de due diligence y fundraising por más de $100M. Especializado en modelado financiero y valoración.
-                </p>
-                <div class="mentor-skills">
-                    <span class="skill-badge">Financial Modeling</span>
-                    <span class="skill-badge">Fundraising</span>
-                    <span class="skill-badge">M&A</span>
-                </div>
-                <div class="mentor-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">150+</div>
-                        <div class="stat-label">Sesiones</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">20</div>
-                        <div class="stat-label">Años exp.</div>
+                        <div class="stat-label">Años UNAB</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">100%</div>
                         <div class="stat-label">Satisfacción</div>
                     </div>
                 </div>
-                <div class="mentor-price">
-                    <span class="price-label">Desde:</span>
-                    <div>
-                        <span class="price-value">$200</span>
-                        <span class="price-period">/hora</span>
-                    </div>
+                <div class="mentor-availability">
+                    <span class="availability-label">📍 Modalidad:</span>
+                    <span>Presencial (Oficina B-302)</span>
                 </div>
-                <span class="availability-badge">
-                    <span class="availability-dot"></span>
-                    Disponible esta semana
-                </span>
+                <div class="mentor-availability">
+                    <span class="availability-label">⏰ Disponibilidad:</span>
+                    <span class="availability-status">
+                        <span class="availability-dot"></span>
+                        Lunes y Miércoles 2-4pm
+                    </span>
+                </div>
+                <div class="mentor-availability">
+                    <span class="availability-label">💰 Costo:</span>
+                    <span class="free-badge">✨ GRATIS</span>
+                </div>
                 <div class="mentor-actions">
-                    <button class="btn-schedule">📅 Agendar Sesión</button>
+                    <button class="btn-schedule">📅 Solicitar Tutoría</button>
                     <button class="btn-profile">Ver Perfil</button>
                 </div>
             </div>
 
-            <!-- Mentor 6 -->
+            <!-- Mentor 3 - Estudiante -->
             <div class="mentor-card">
                 <div class="mentor-header">
-                    <img src="https://ui-avatars.com/api/?name=Sofia+Ramirez&size=80&background=8b5cf6&color=fff&bold=true" alt="Sofía Ramírez" class="mentor-avatar">
+                    <img src="https://ui-avatars.com/api/?name=Laura+Garcia&size=80&background=10b981&color=fff&bold=true" alt="Laura García" class="mentor-avatar">
                     <div class="mentor-info">
-                        <h3 class="mentor-name">Sofía Ramírez</h3>
-                        <p class="mentor-title">🚀 Product Manager Senior</p>
+                        <span class="mentor-type-badge">Estudiante - 9° Semestre</span>
+                        <h3 class="mentor-name">Laura García</h3>
+                        <p class="mentor-title">💼 Administración de Empresas</p>
                         <div class="mentor-rating">
                             <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <span class="rating-number">4.9</span>
-                            <span class="reviews-count">(112 reseñas)</span>
+                            <span class="rating-number">4.8</span>
+                            <span class="reviews-count">(18 tutorías)</span>
                         </div>
                     </div>
                 </div>
                 <p class="mentor-bio">
-                    Product Manager con 9 años construyendo productos que aman los usuarios. Ex-PM en Spotify y Meta. He lanzado más de 15 productos exitosos con millones de usuarios activos.
+                    Estudiante de Administración apasionada por los números y la gestión financiera. He ayudado a muchos compañeros a entender contabilidad y finanzas de forma práctica.
                 </p>
-                <div class="mentor-skills">
-                    <span class="skill-badge">Product Strategy</span>
-                    <span class="skill-badge">Roadmapping</span>
-                    <span class="skill-badge">Analytics</span>
+                <div class="mentor-subjects">
+                    <span class="subject-badge">Contabilidad I-II</span>
+                    <span class="subject-badge">Costos</span>
+                    <span class="subject-badge">Finanzas</span>
                 </div>
                 <div class="mentor-stats">
                     <div class="stat-item">
-                        <div class="stat-value">220+</div>
-                        <div class="stat-label">Sesiones</div>
+                        <div class="stat-value">18</div>
+                        <div class="stat-label">Tutorías</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">9</div>
-                        <div class="stat-label">Años exp.</div>
+                        <div class="stat-value">9°</div>
+                        <div class="stat-label">Semestre</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">98%</div>
-                        <div class="stat-label">Satisfacción</div>
+                        <div class="stat-value">4.6</div>
+                        <div class="stat-label">Promedio</div>
                     </div>
                 </div>
-                <div class="mentor-price">
-                    <span class="price-label">Desde:</span>
-                    <div>
-                        <span class="price-value">$110</span>
-                        <span class="price-period">/hora</span>
-                    </div>
+                <div class="mentor-availability">
+                    <span class="availability-label">📍 Modalidad:</span>
+                    <span>Virtual (Google Meet)</span>
                 </div>
-                <span class="availability-badge">
-                    <span class="availability-dot"></span>
-                    Disponible hoy
-                </span>
-                <div class="mentor-actions">
-                    <button class="btn-schedule">📅 Agendar Sesión</button>
-                    <button class="btn-profile">Ver Perfil</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Datos de ejemplo de mentores
-        const mentorsData = [
-            {
-                name: "Juan García",
-                title: "CEO & Growth Expert",
-                category: "business",
-                experience: "expert",
-                price: 120,
-                language: "es"
-            },
-            {
-                name: "Ana Martínez",
-                title: "UX/UI Design Lead",
-                category: "design",
-                experience: "senior",
-                price: 95,
-                language: "es"
-            },
-            // Agregar más datos según necesites
-        ];
-
-        // Función de búsqueda
-        document.querySelector('.btn-search').addEventListener('click', performSearch);
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-
-        function performSearch() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.mentor-card');
-            let visibleCount = 0;
-
-            cards.forEach(card => {
-                const name = card.querySelector('.mentor-name').textContent.toLowerCase();
-                const title = card.querySelector('.mentor-title').textContent.toLowerCase();
-                const bio = card.querySelector('.mentor-bio').textContent.toLowerCase();
-                
-                if (name.includes(searchTerm) || title.includes(searchTerm) || bio.includes(searchTerm) || searchTerm === '') {
-                    card.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            updateResultsCount(visibleCount);
-        }
-
-        // Actualizar contador de resultados
-        function updateResultsCount(count) {
-            document.querySelector('.results-count').textContent = `${count} mentores disponibles`;
-        }
-
-        // Manejo de filtros
-        const filters = {
-            category: document.getElementById('categoryFilter'),
-            experience: document.getElementById('experienceFilter'),
-            price: document.getElementById('priceFilter'),
-            language: document.getElementById('languageFilter')
-        };
-
-        Object.keys(filters).forEach(filterKey => {
-            filters[filterKey].addEventListener('change', function() {
-                updateActiveTags();
-                applyFilters();
-            });
-        });
-
-        function updateActiveTags() {
-            const tagsContainer = document.getElementById('activeTags');
-            tagsContainer.innerHTML = '';
-
-            let hasFilters = false;
-
-            Object.keys(filters).forEach(filterKey => {
-                const select = filters[filterKey];
-                if (select.value !== '') {
-                    hasFilters = true;
-                    const tag = document.createElement('span');
-                    tag.className = 'filter-tag';
-                    tag.innerHTML = `${select.options[select.selectedIndex].text} <span class="remove">×</span>`;
-                    tag.onclick = function() {
-                        select.value = '';
-                        updateActiveTags();
-                        applyFilters();
-                    };
-                    tagsContainer.appendChild(tag);
-                }
-            });
-
-            if (hasFilters) {
-                const clearBtn = document.createElement('button');
-                clearBtn.className = 'btn-clear-filters';
-                clearBtn.textContent = 'Limpiar filtros';
-                clearBtn.onclick = clearAllFilters;
-                tagsContainer.appendChild(clearBtn);
-            }
-        }
-
-        function clearAllFilters() {
-            Object.keys(filters).forEach(filterKey => {
-                filters[filterKey].value = '';
-            });
-            updateActiveTags();
-            applyFilters();
-        }
-
-        function applyFilters() {
-            const cards = document.querySelectorAll('.mentor-card');
-            let visibleCount = 0;
-
-            cards.forEach(card => {
-                card.style.display = 'block';
-                visibleCount++;
-            });
-
-            updateResultsCount(visibleCount);
-        }
-
-        // Funciones para botones de agendar
-        document.querySelectorAll('.btn-schedule').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const mentorName = this.closest('.mentor-card').querySelector('.mentor-name').textContent;
-                alert(`🎉 Redirigiendo al calendario de ${mentorName}...\n\nAquí se abriría el sistema de agendamiento.`);
-            });
-        });
-
-        // Funciones para botones de ver perfil
-        document.querySelectorAll('.btn-profile').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const mentorName = this.closest('.mentor-card').querySelector('.mentor-name').textContent;
-                alert(`📋 Abriendo perfil completo de ${mentorName}...\n\nAquí se mostraría el perfil detallado del mentor.`);
-            });
-        });
-
-        // Click en toda la tarjeta
-        document.querySelectorAll('.mentor-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const mentorName = this.querySelector('.mentor-name').textContent;
-                alert(`📋 Ver perfil completo de ${mentorName}`);
-            });
-        });
-
-        // Navegación
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-    </script>
-</body>
-</html>
+                <div class="mentor-availability">
