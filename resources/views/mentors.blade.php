@@ -612,7 +612,50 @@
             }
         }
     </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-8">
+                    <a href="/dashboard" class="text-2xl font-bold text-blue-600">
+                        Plan Padrino UNAB
+                    </a>
+                    <div class="hidden md:flex gap-6">
+                        <a href="/dashboard" class="text-gray-700 hover:text-blue-600 transition">
+                            🏠 Dashboard
+                        </a>
+                        <a href="/mentors" class="text-gray-700 hover:text-blue-600 transition font-medium border-b-2 border-blue-600">
+                            🔍 Buscar Mentores
+                        </a>
+                        <a href="/sessions" class="text-gray-700 hover:text-blue-600 transition">
+                            📅 Mis Sesiones
+                        </a>
+                        <a href="/profile" class="text-gray-700 hover:text-blue-600 transition">
+                            👤 Mi Perfil
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-medium text-gray-700">{{ Auth::user()->name }}</p>
+                        <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
+                    </div>
+                    <img src="{{ Auth::user()->avatar ?? '/img/default-avatar.png' }}" 
+                         alt="Avatar" 
+                         class="w-10 h-10 rounded-full border-2 border-blue-500">
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="text-gray-600 hover:text-red-600 transition">
+                            🚪 Salir
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
 <body>
     <!-- Header -->
     <div class="header">

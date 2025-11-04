@@ -326,6 +326,7 @@
             }
         }
     </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     <div class="auth-container">
@@ -490,145 +491,171 @@
         </div>
     </div>
 
-    <script>
-        // Cambiar entre tabs
-        function switchTab(tab) {
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            const tabs = document.querySelectorAll('.tab-button');
+    
+<script>
+    // Form handling with Laravel backend
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
 
-            tabs.forEach(btn => btn.classList.remove('active'));
+    // Handle login form submission
+    async function handleLogin(e) {
+        e.preventDefault();
+        clearError();
 
-            if (tab === 'login') {
-                loginForm.classList.add('active');
-                registerForm.classList.remove('active');
-                tabs[0].classList.add('active');
-            } else {
-                registerForm.classList.add('active');
-                loginForm.classList.remove('active');
-                tabs[1].classList.add('active');
-            }
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        if (!validateEmail(email)) {
+            showError('login', 'Por favor ingresa un correo UNAB válido (@unab.edu.co)');
+            return;
         }
 
-        // Toggle visibilidad de contraseña
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            input.type = input.type === 'password' ? 'text' : 'password';
-        }
-
-        // Validación de email
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
-
-        // Mostrar error
-        function showError(inputId, message) {
-            const input = document.getElementById(inputId);
-            const error = document.getElementById(inputId + '-error');
-            input.classList.add('error');
-            error.textContent = message;
-            error.classList.add('show');
-        }
-
-        // Limpiar error
-        function clearError(inputId) {
-            const input = document.getElementById(inputId);
-            const error = document.getElementById(inputId + '-error');
-            input.classList.remove('error');
-            error.classList.remove('show');
-        }
-
-        // Manejar login
-        function handleLogin(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            
-            // Limpiar errores previos
-            clearError('login-email');
-            clearError('login-password');
-            
-            let isValid = true;
-
-            // Validar email
-            if (!validateEmail(email)) {
-                showError('login-email', 'Por favor ingresa un email válido');
-                isValid = false;
-            }
-
-            // Validar contraseña
-            if (password.length < 6) {
-                showError('login-password', 'La contraseña debe tener al menos 6 caracteres');
-                isValid = false;
-            }
-
-            if (isValid) {
-                alert('¡Inicio de sesión exitoso! (Aquí conectarías con tu backend)');
-                // Aquí irían las llamadas a tu API
-            }
-        }
-
-        // Manejar registro
-        function handleRegister(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('register-name').value;
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-            const confirmPassword = document.getElementById('register-confirm-password').value;
-            
-            // Limpiar errores previos
-            clearError('register-name');
-            clearError('register-email');
-            clearError('register-password');
-            clearError('register-confirm-password');
-            
-            let isValid = true;
-
-            // Validar nombre
-            if (name.length < 3) {
-                showError('register-name', 'El nombre debe tener al menos 3 caracteres');
-                isValid = false;
-            }
-
-            // Validar email
-            if (!validateEmail(email)) {
-                showError('register-email', 'Por favor ingresa un email válido');
-                isValid = false;
-            }
-
-            // Validar contraseña
-            if (password.length < 8) {
-                showError('register-password', 'La contraseña debe tener al menos 8 caracteres');
-                isValid = false;
-            }
-
-            // Validar confirmación de contraseña
-            if (password !== confirmPassword) {
-                showError('register-confirm-password', 'Las contraseñas no coinciden');
-                isValid = false;
-            }
-
-            if (isValid) {
-                alert('¡Registro exitoso! (Aquí conectarías con tu backend)');
-                // Aquí irían las llamadas a tu API
-            }
-        }
-
-        // Manejar autenticación con Google
-        function handleGoogleAuth() {
-            alert('Aquí se integraría la autenticación con Google OAuth');
-            // Aquí irían las llamadas a Google OAuth
-        }
-
-        // Limpiar errores al escribir
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', function() {
-                clearError(this.id);
+        try {
+            const formData = new FormData(loginForm);
+            const response = await fetch('{{ route("login") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
             });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                window.location.href = '{{ route("dashboard") }}';
+            } else {
+                showError('login', data.message || 'Credenciales incorrectas');
+            }
+        } catch (error) {
+            showError('login', 'Error al iniciar sesión. Intenta nuevamente.');
+        }
+    }
+
+    // Handle registration form submission
+    async function handleRegister(e) {
+        e.preventDefault();
+        clearError();
+
+        const name = document.getElementById('registerName').value;
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (!validateEmail(email)) {
+            showError('register', 'Debes usar tu correo institucional UNAB (@unab.edu.co)');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            showError('register', 'Las contraseñas no coinciden');
+            return;
+        }
+
+        if (password.length < 8) {
+            showError('register', 'La contraseña debe tener al menos 8 caracteres');
+            return;
+        }
+
+        try {
+            const formData = new FormData(registerForm);
+            const response = await fetch('{{ route("register") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                window.location.href = '{{ route("dashboard") }}';
+            } else {
+                showError('register', data.message || 'Error en el registro');
+            }
+        } catch (error) {
+            showError('register', 'Error al registrarse. Intenta nuevamente.');
+        }
+    }
+
+    // Google OAuth handler
+    async function handleGoogleAuth() {
+        window.location.href = '{{ route("auth.google") }}';
+    }
+
+    // Email validation - must be @unab.edu.co
+    function validateEmail(email) {
+        return email.toLowerCase().endsWith('@unab.edu.co');
+    }
+
+    // Error display
+    function showError(formType, message) {
+        const errorDiv = document.getElementById(formType === 'login' ? 'loginError' : 'registerError');
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+        }
+    }
+
+    function clearError() {
+        document.querySelectorAll('[id$="Error"]').forEach(el => {
+            el.classList.add('hidden');
         });
-    </script>
+    }
+
+    // Password visibility toggle
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = input.nextElementSibling;
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            icon.textContent = '👁️';
+        }
+    }
+
+    // Tab switching
+    function switchTab(tab) {
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginFormContainer');
+        const registerForm = document.getElementById('registerFormContainer');
+
+        if (tab === 'login') {
+            loginTab.classList.add('border-blue-600', 'text-blue-600');
+            loginTab.classList.remove('text-gray-500');
+            registerTab.classList.remove('border-blue-600', 'text-blue-600');
+            registerTab.classList.add('text-gray-500');
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+        } else {
+            registerTab.classList.add('border-blue-600', 'text-blue-600');
+            registerTab.classList.remove('text-gray-500');
+            loginTab.classList.remove('border-blue-600', 'text-blue-600');
+            loginTab.classList.add('text-gray-500');
+            registerForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        }
+        clearError();
+    }
+
+    // Event listeners
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleRegister);
+    }
+
+    // Laravel validation errors display
+    @if($errors->any())
+        showError('{{ old("form_type", "login") }}', '{{ $errors->first() }}');
+    @endif
+</script>
+
 </body>
 </html>

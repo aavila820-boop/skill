@@ -506,7 +506,50 @@
             }
         }
     </style>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-8">
+                    <a href="/dashboard" class="text-2xl font-bold text-blue-600">
+                        Plan Padrino UNAB
+                    </a>
+                    <div class="hidden md:flex gap-6">
+                        <a href="/dashboard" class="text-gray-700 hover:text-blue-600 transition">
+                            🏠 Dashboard
+                        </a>
+                        <a href="/mentors" class="text-gray-700 hover:text-blue-600 transition">
+                            🔍 Buscar Mentores
+                        </a>
+                        <a href="/sessions" class="text-gray-700 hover:text-blue-600 transition">
+                            📅 Mis Sesiones
+                        </a>
+                        <a href="/profile" class="text-gray-700 hover:text-blue-600 transition font-medium border-b-2 border-blue-600">
+                            👤 Mi Perfil
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-medium text-gray-700">{{ Auth::user()->name }}</p>
+                        <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
+                    </div>
+                    <img src="{{ Auth::user()->avatar ?? '/img/default-avatar.png' }}" 
+                         alt="Avatar" 
+                         class="w-10 h-10 rounded-full border-2 border-blue-500">
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="text-gray-600 hover:text-red-600 transition">
+                            🚪 Salir
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
 <body>
     <!-- Header -->
     <div class="header">
@@ -716,5 +759,341 @@
             }
         });
     </script>
+
+<script>
+    let isEditMode = false;
+    let originalData = {};
+
+    // Load profile data from backend
+    async function loadProfileData() {
+        try {
+            const response = await fetch('/api/profile', {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('auth_token'),
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                displayProfileData(data);
+                originalData = { ...data };
+            }
+        } catch (error) {
+            console.error('Error loading profile:', error);
+            showNotification('Error al cargar perfil', 'error');
+        }
+    }
+
+    // Display profile data
+    function displayProfileData(data) {
+        // Update basic info
+        document.getElementById('userName')?.textContent = data.name || '';
+        document.getElementById('userEmail')?.textContent = data.email || '';
+        document.getElementById('userProgram')?.textContent = data.program || '';
+        document.getElementById('userSemester')?.textContent = data.semester || '';
+        document.getElementById('userBio')?.textContent = data.bio || '';
+
+        // Update avatar
+        if (data.avatar) {
+            document.getElementById('userAvatar')?.setAttribute('src', data.avatar);
+        }
+
+        // Update subjects
+        displaySubjects(data.subjects || []);
+
+        // Update statistics
+        document.getElementById('totalSessions')?.textContent = data.stats?.totalSessions || 0;
+        document.getElementById('totalHours')?.textContent = data.stats?.totalHours || 0;
+        document.getElementById('averageRating')?.textContent = data.stats?.averageRating?.toFixed(1) || '0.0';
+
+        // Update achievements
+        displayAchievements(data.achievements || []);
+
+        // Update tutoring sessions
+        displayTutoringSessions(data.sessions || []);
+    }
+
+    // Display subjects
+    function displaySubjects(subjects) {
+        const container = document.getElementById('subjectsList');
+        if (!container) return;
+
+        container.innerHTML = subjects.map(subject => `
+            <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                <div>
+                    <span class="text-blue-700 font-medium">${subject.name}</span>
+                    <span class="text-sm text-gray-600 ml-2">${subject.status || 'Activa'}</span>
+                </div>
+                ${isEditMode ? `
+                    <button onclick="removeSubject('${subject.id}')" class="text-red-500 hover:text-red-700">
+                        ✕
+                    </button>
+                ` : ''}
+            </div>
+        `).join('');
+
+        if (isEditMode) {
+            container.innerHTML += `
+                <button onclick="addSubject()" class="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition text-gray-600 hover:text-blue-600">
+                    + Agregar materia
+                </button>
+            `;
+        }
+    }
+
+    // Display achievements
+    function displayAchievements(achievements) {
+        const container = document.getElementById('achievementsList');
+        if (!container) return;
+
+        container.innerHTML = achievements.map(achievement => `
+            <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border-l-4 border-yellow-500">
+                <div class="flex items-start gap-3">
+                    <span class="text-3xl">${achievement.icon}</span>
+                    <div>
+                        <h4 class="font-semibold text-gray-800">${achievement.name}</h4>
+                        <p class="text-sm text-gray-600">${achievement.description}</p>
+                        <p class="text-xs text-gray-500 mt-1">${achievement.date}</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Display tutoring sessions
+    function displayTutoringSessions(sessions) {
+        const container = document.getElementById('sessionsList');
+        if (!container) return;
+
+        container.innerHTML = sessions.map(session => `
+            <div class="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md transition">
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <h4 class="font-semibold text-gray-800">${session.subject}</h4>
+                        <p class="text-sm text-gray-600">con ${session.mentor_name}</p>
+                    </div>
+                    <span class="px-2 py-1 ${getSessionStatusClass(session.status)} text-xs rounded-full">
+                        ${getSessionStatusText(session.status)}
+                    </span>
+                </div>
+                <div class="flex items-center justify-between text-sm text-gray-600">
+                    <span>📅 ${session.date}</span>
+                    <span>🕐 ${session.duration}</span>
+                    ${session.rating ? `<span class="text-yellow-500">⭐ ${session.rating}</span>` : ''}
+                </div>
+                ${session.notes ? `
+                    <p class="text-sm text-gray-500 mt-2 italic">"${session.notes}"</p>
+                ` : ''}
+            </div>
+        `).join('');
+    }
+
+    function getSessionStatusClass(status) {
+        const classes = {
+            'completed': 'bg-green-100 text-green-700',
+            'upcoming': 'bg-blue-100 text-blue-700',
+            'cancelled': 'bg-red-100 text-red-700',
+            'pending': 'bg-yellow-100 text-yellow-700'
+        };
+        return classes[status] || 'bg-gray-100 text-gray-700';
+    }
+
+    function getSessionStatusText(status) {
+        const texts = {
+            'completed': 'Completada',
+            'upcoming': 'Próxima',
+            'cancelled': 'Cancelada',
+            'pending': 'Pendiente'
+        };
+        return texts[status] || status;
+    }
+
+    // Toggle edit mode
+    function toggleEditMode() {
+        isEditMode = !isEditMode;
+        const editBtn = document.getElementById('editProfileBtn');
+        const saveBtn = document.getElementById('saveProfileBtn');
+        const cancelBtn = document.getElementById('cancelProfileBtn');
+
+        if (isEditMode) {
+            editBtn?.classList.add('hidden');
+            saveBtn?.classList.remove('hidden');
+            cancelBtn?.classList.remove('hidden');
+            makeFieldsEditable();
+        } else {
+            editBtn?.classList.remove('hidden');
+            saveBtn?.classList.add('hidden');
+            cancelBtn?.classList.add('hidden');
+            makeFieldsReadonly();
+        }
+    }
+
+    // Make fields editable
+    function makeFieldsEditable() {
+        const editableFields = ['userName', 'userBio', 'userProgram', 'userSemester'];
+        editableFields.forEach(fieldId => {
+            const element = document.getElementById(fieldId);
+            if (element) {
+                const currentValue = element.textContent;
+                const inputType = fieldId === 'userBio' ? 'textarea' : 'input';
+                const input = document.createElement(inputType);
+                input.id = fieldId;
+                input.value = currentValue;
+                input.className = element.className + ' border-2 border-blue-300 bg-white px-2 py-1 rounded';
+                if (inputType === 'textarea') {
+                    input.rows = 4;
+                }
+                element.replaceWith(input);
+            }
+        });
+
+        displaySubjects(originalData.subjects || []);
+    }
+
+    // Make fields readonly
+    function makeFieldsReadonly() {
+        const editableFields = ['userName', 'userBio', 'userProgram', 'userSemester'];
+        editableFields.forEach(fieldId => {
+            const element = document.getElementById(fieldId);
+            if (element && (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA')) {
+                const span = document.createElement('span');
+                span.id = fieldId;
+                span.textContent = element.value;
+                span.className = element.className.replace('border-2 border-blue-300 bg-white px-2 py-1 rounded', '');
+                element.replaceWith(span);
+            }
+        });
+
+        displaySubjects(originalData.subjects || []);
+    }
+
+    // Save profile changes
+    async function saveProfile() {
+        const updatedData = {
+            name: document.getElementById('userName')?.value || document.getElementById('userName')?.textContent,
+            bio: document.getElementById('userBio')?.value || document.getElementById('userBio')?.textContent,
+            program: document.getElementById('userProgram')?.value || document.getElementById('userProgram')?.textContent,
+            semester: document.getElementById('userSemester')?.value || document.getElementById('userSemester')?.textContent,
+            subjects: originalData.subjects
+        };
+
+        try {
+            const response = await fetch('/api/profile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('auth_token'),
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify(updatedData)
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                originalData = { ...data };
+                toggleEditMode();
+                showNotification('Perfil actualizado exitosamente', 'success');
+                loadProfileData();
+            } else {
+                throw new Error('Error al guardar');
+            }
+        } catch (error) {
+            console.error('Error saving profile:', error);
+            showNotification('Error al guardar cambios', 'error');
+        }
+    }
+
+    // Cancel editing
+    function cancelEdit() {
+        toggleEditMode();
+        displayProfileData(originalData);
+    }
+
+    // Add subject
+    function addSubject() {
+        const subjectName = prompt('Ingresa el nombre de la materia:');
+        if (subjectName) {
+            originalData.subjects = originalData.subjects || [];
+            originalData.subjects.push({
+                id: Date.now().toString(),
+                name: subjectName,
+                status: 'Activa'
+            });
+            displaySubjects(originalData.subjects);
+        }
+    }
+
+    // Remove subject
+    function removeSubject(subjectId) {
+        if (confirm('¿Estás seguro de eliminar esta materia?')) {
+            originalData.subjects = originalData.subjects.filter(s => s.id !== subjectId);
+            displaySubjects(originalData.subjects);
+        }
+    }
+
+    // Upload avatar
+    async function uploadAvatar() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = async (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('avatar', file);
+
+                try {
+                    const response = await fetch('/api/profile/avatar', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('auth_token'),
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        document.getElementById('userAvatar')?.setAttribute('src', data.avatar);
+                        showNotification('Avatar actualizado', 'success');
+                    }
+                } catch (error) {
+                    showNotification('Error al subir avatar', 'error');
+                }
+            }
+        };
+        input.click();
+    }
+
+    // Notification system
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = `fixed top-20 right-4 px-6 py-3 rounded-lg shadow-lg z-50 ${
+            type === 'success' ? 'bg-green-500' : 'bg-red-500'
+        } text-white`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        loadProfileData();
+
+        // Add event listeners for edit buttons
+        document.getElementById('editProfileBtn')?.addEventListener('click', toggleEditMode);
+        document.getElementById('saveProfileBtn')?.addEventListener('click', saveProfile);
+        document.getElementById('cancelProfileBtn')?.addEventListener('click', cancelEdit);
+
+        // Avatar upload
+        const avatarElement = document.getElementById('userAvatar');
+        if (avatarElement) {
+            avatarElement.style.cursor = 'pointer';
+            avatarElement.addEventListener('click', uploadAvatar);
+        }
+    });
+</script>
+
 </body>
 </html>

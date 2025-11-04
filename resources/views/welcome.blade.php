@@ -757,7 +757,7 @@
                         <span class="subject-tag">Algoritmos</span>
                         <span class="subject-tag">Estructuras</span>
                     </div>
-                    <a href="#" class="mentor-button">Solicitar Tutoría</a>
+                    <a href="/login" class="mentor-button">Solicitar Tutoría</a>
                 </div>
 
                 <div class="mentor-card">
@@ -876,5 +876,41 @@
             <p>&copy; 2025 SkillLink UNAB - Plan Padrino Digital. Universidad Autónoma de Bucaramanga. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+<script>
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href !== '#') {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });
+    });
+
+    // Add active state to navigation on scroll
+    window.addEventListener('scroll', () => {
+        const sections = document.querySelectorAll('section[id]');
+        const scrollY = window.pageYOffset;
+
+        sections.forEach(section => {
+            const sectionHeight = section.offsetHeight;
+            const sectionTop = section.offsetTop - 100;
+            const sectionId = section.getAttribute('id');
+            const navLink = document.querySelector(`a[href="#${sectionId}"]`);
+
+            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                navLink?.classList.add('text-blue-600', 'font-semibold');
+            } else {
+                navLink?.classList.remove('text-blue-600', 'font-semibold');
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
