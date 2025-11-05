@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkillLink UNAB - Buscar Mentores Plan Padrino</title>
+    <title>Buscar Mentores - SkillLink UNAB</title>
     <style>
         * {
             margin: 0;
@@ -13,920 +13,505 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        header {
             background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        /* Header */
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: contain;
-            background: white;
-            padding: 5px;
-        }
-
-        .logo-text {
-            font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #0051a5, #003d7a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .unab-badge {
-            font-size: 11px;
-            color: #666;
-            font-weight: 600;
-            display: block;
-            margin-top: -5px;
-        }
-
-        .header-nav {
-            display: flex;
-            gap: 25px;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #4b5563;
-            font-weight: 600;
-            transition: all 0.3s;
-            padding: 8px 16px;
-            border-radius: 8px;
-        }
-
-        .nav-link:hover {
-            color: #0051a5;
-            background: #f3f4f6;
-        }
-
-        .nav-link.active {
-            color: #0051a5;
-            background: #e3f2fd;
-        }
-
-        /* Container Principal */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Banner Plan Padrino */
-        .plan-padrino-banner {
-            background: linear-gradient(135deg, #0051a5, #0066cc);
             color: white;
-            padding: 25px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .banner-content {
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 20px;
+            gap: 1rem;
+            text-decoration: none;
+            color: white;
         }
 
-        .banner-text h2 {
-            font-size: 26px;
-            margin-bottom: 8px;
-        }
-
-        .banner-text p {
-            font-size: 15px;
-            opacity: 0.95;
-        }
-
-        .banner-stats {
-            display: flex;
-            gap: 30px;
-        }
-
-        .stat-box {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 15px 20px;
-            border-radius: 12px;
-        }
-
-        .stat-number {
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .stat-text {
-            font-size: 12px;
-            opacity: 0.9;
-        }
-
-        /* Sección de Búsqueda y Filtros */
-        .search-section {
+        .logo-icon {
+            width: 40px;
+            height: 40px;
             background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        .search-header {
+            border-radius: 8px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .search-title {
-            font-size: 28px;
+            justify-content: center;
             font-weight: bold;
-            color: #1f2937;
+            color: #0051a5;
         }
 
-        .results-count {
-            color: #6b7280;
-            font-size: 16px;
-        }
-
-        /* Barra de Búsqueda */
-        .search-bar-container {
+        .nav-right {
             display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
+            align-items: center;
+            gap: 1.5rem;
         }
 
-        .search-input-wrapper {
-            flex: 1;
-            position: relative;
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
         }
 
-        .search-input {
-            width: 100%;
-            padding: 15px 50px 15px 20px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.3s;
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
         }
 
-        .search-input:focus {
-            outline: none;
-            border-color: #0051a5;
-            box-shadow: 0 0 0 4px rgba(0, 81, 165, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-            color: #9ca3af;
-        }
-
-        .btn-search {
-            padding: 15px 35px;
-            background: linear-gradient(135deg, #0051a5, #003d7a);
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
             cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-
-        .btn-search:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 81, 165, 0.4);
-        }
-
-        /* Filtros */
-        .filters-container {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .filter-label {
-            display: block;
-            font-size: 14px;
             font-weight: 600;
-            color: #374151;
-            margin-bottom: 8px;
         }
 
-        .filter-select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .breadcrumb {
             background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .filter-select:focus {
-            outline: none;
-            border-color: #0051a5;
-        }
-
-        .filter-tags {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .filter-tag {
-            padding: 8px 16px;
-            background: #e3f2fd;
+        .page-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
             color: #0051a5;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
         }
 
-        .filter-tag:hover {
-            background: #0051a5;
-            color: white;
+        .page-subtitle {
+            color: #666;
+            margin-bottom: 2rem;
         }
 
-        .filter-tag .remove {
-            font-size: 16px;
-        }
-
-        .btn-clear-filters {
-            padding: 8px 16px;
-            background: transparent;
-            color: #ef4444;
-            border: 2px solid #ef4444;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-clear-filters:hover {
-            background: #ef4444;
-            color: white;
-        }
-
-        /* Grid de Mentores */
         .mentors-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
         }
 
         .mentor-card {
             background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
             transition: all 0.3s;
-            cursor: pointer;
-            border: 2px solid transparent;
         }
 
         .mentor-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0, 81, 165, 0.3);
-            border-color: #0051a5;
-        }
-
-        .mentor-header {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .mentor-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #0051a5;
-        }
-
-        .mentor-info {
-            flex: 1;
-        }
-
-        .mentor-name {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 5px;
-        }
-
-        .mentor-title {
-            color: #0051a5;
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 8px;
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 81, 165, 0.2);
         }
 
         .mentor-type-badge {
             display: inline-block;
-            padding: 4px 10px;
-            background: #fef3c7;
-            color: #92400e;
-            border-radius: 12px;
-            font-size: 11px;
+            background: #e3f2fd;
+            color: #0051a5;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 1rem;
         }
 
-        .mentor-type-badge.profesor {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .mentor-rating {
+        .mentor-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
+            margin: 0 auto 1.5rem;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
         }
 
-        .stars {
-            color: #fbbf24;
-        }
-
-        .rating-number {
+        .mentor-name {
+            font-size: 1.4rem;
             font-weight: bold;
-            color: #374151;
+            margin-bottom: 0.3rem;
+            color: #333;
         }
 
-        .reviews-count {
-            color: #9ca3af;
+        .mentor-specialty {
+            color: #0051a5;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
         }
 
-        .mentor-bio {
-            color: #4b5563;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            font-size: 14px;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        .mentor-career {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
         }
 
         .mentor-subjects {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 15px;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
         }
 
-        .subject-badge {
-            padding: 6px 12px;
+        .subject-tag {
             background: #f3f4f6;
-            border-radius: 15px;
-            font-size: 12px;
             color: #374151;
+            padding: 0.4rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
             font-weight: 600;
         }
 
-        .mentor-stats {
+        .mentor-button {
+            width: 100%;
+            padding: 0.8rem;
+            background: #0051a5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .mentor-button:hover {
+            background: #003d7a;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal.active {
             display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            border-top: 1px solid #e5e7eb;
-            border-bottom: 1px solid #e5e7eb;
-            margin-bottom: 15px;
+            align-items: center;
+            justify-content: center;
         }
 
-        .stat-item {
-            text-align: center;
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
-        .stat-value {
-            font-size: 18px;
+        .modal-header {
+            font-size: 1.5rem;
             font-weight: bold;
+            margin-bottom: 1rem;
             color: #0051a5;
         }
 
-        .stat-label {
-            font-size: 12px;
-            color: #9ca3af;
-            margin-top: 3px;
+        .form-group {
+            margin-bottom: 1.5rem;
         }
 
-        .mentor-availability {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding: 12px;
-            background: #f9fafb;
-            border-radius: 10px;
-        }
-
-        .availability-label {
-            color: #6b7280;
-            font-size: 13px;
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
             font-weight: 600;
+            color: #333;
         }
 
-        .free-badge {
-            padding: 6px 14px;
-            background: #d1fae5;
-            color: #065f46;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
         }
 
-        .mentor-actions {
-            display: flex;
-            gap: 10px;
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0051a5;
+            box-shadow: 0 0 0 3px rgba(0, 81, 165, 0.1);
         }
 
-        .btn-schedule {
-            flex: 1;
-            padding: 12px;
-            background: linear-gradient(135deg, #0051a5, #003d7a);
+        .modal-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #0051a5;
             color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
         }
 
-        .btn-schedule:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 81, 165, 0.4);
+        .btn-primary:hover {
+            background: #003d7a;
         }
 
-        .btn-profile {
-            padding: 12px 20px;
-            background: #f3f4f6;
-            color: #374151;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
         }
 
-        .btn-profile:hover {
-            background: #e5e7eb;
+        .btn-secondary:hover {
+            background: #e0e0e0;
         }
 
-        .availability-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 10px;
-            background: #d1fae5;
-            color: #065f46;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .availability-dot {
-            width: 6px;
-            height: 6px;
-            background: #10b981;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-
-        /* Sin resultados */
-        .no-results {
+        .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            padding: 2rem;
+            color: #999;
         }
 
-        .no-results-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
-
-        .no-results-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 10px;
-        }
-
-        .no-results-text {
-            color: #6b7280;
-            font-size: 16px;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .header-nav {
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-
-            .banner-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .banner-stats {
-                justify-content: center;
-            }
-
-            .search-bar-container {
-                flex-direction: column;
-            }
-
-            .filters-container {
-                flex-direction: column;
-            }
-
-            .filter-group {
-                min-width: 100%;
-            }
-
             .mentors-grid {
                 grid-template-columns: 1fr;
             }
 
-            .mentor-actions {
-                flex-direction: column;
+            .nav-links {
+                display: none;
             }
         }
     </style>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center gap-8">
-                    <a href="/dashboard" class="text-2xl font-bold text-blue-600">
-                        Plan Padrino UNAB
-                    </a>
-                    <div class="hidden md:flex gap-6">
-                        <a href="/dashboard" class="text-gray-700 hover:text-blue-600 transition">
-                            🏠 Dashboard
-                        </a>
-                        <a href="/mentors" class="text-gray-700 hover:text-blue-600 transition font-medium border-b-2 border-blue-600">
-                            🔍 Buscar Mentores
-                        </a>
-                        <a href="/sessions" class="text-gray-700 hover:text-blue-600 transition">
-                            📅 Mis Sesiones
-                        </a>
-                        <a href="/profile" class="text-gray-700 hover:text-blue-600 transition">
-                            👤 Mi Perfil
-                        </a>
-                    </div>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="text-right hidden sm:block">
-                        <p class="text-sm font-medium text-gray-700">{{ Auth::user()->name }}</p>
-                        <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
-                    </div>
-                    <img src="{{ Auth::user()->avatar ?? '/img/default-avatar.png' }}" 
-                         alt="Avatar" 
-                         class="w-10 h-10 rounded-full border-2 border-blue-500">
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="text-gray-600 hover:text-red-600 transition">
-                            🚪 Salir
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </nav>
-
 <body>
     <!-- Header -->
-    <div class="header">
-        <div class="logo-container">
-            <img src="./images/uwu2.jpeg" alt="SkillLink UNAB Logo" class="logo">
-            <div>
-                <div class="logo-text">SkillLink UNAB</div>
-                <span class="unab-badge">Plan Padrino Digital</span>
+    <header>
+        <div class="header-container">
+            <a href="{{ route('dashboard') }}" class="logo-section">
+                <div class="logo-icon">SK</div>
+                <div style="font-size: 1.5rem; font-weight: bold;">SkillLink UNAB</div>
+            </a>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ route('mentors') }}">Mentores</a></li>
+                    <li><a href="{{ route('profile') }}">Perfil</a></li>
+                </ul>
+                <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+                    @csrf
+                    <button type="submit" class="logout-btn">Cerrar Sesión</button>
+                </form>
             </div>
         </div>
-        <nav class="header-nav">
-            <a href="#" class="nav-link">Inicio</a>
-            <a href="#" class="nav-link active">Buscar Mentores</a>
-            <a href="#" class="nav-link">Mis Tutorías</a>
-            <a href="#" class="nav-link">Mi Perfil</a>
-        </nav>
+    </header>
+
+    <!-- Main content -->
+    <div class="main-container">
+        
+        <div class="breadcrumb">
+            <a href="{{ route('dashboard') }}" style="color: #0051a5; text-decoration: none; font-weight: 500;">Dashboard</a> / <span>Buscar Mentores</span>
+        </div>
+
+        <h1 class="page-title">👨‍🏫 Buscar Mentores</h1>
+        <p class="page-subtitle">Encuentra el mentor perfecto para tus necesidades académicas</p>
+
+        @if(count($mentors) > 0)
+        <div class="mentors-grid">
+            @foreach($mentors as $mentor)
+            <div class="mentor-card">
+                <span class="mentor-type-badge">
+                    @if(str_contains($mentor->user->email, '@unab.edu.co') && $mentor->program === 'Facultad de Ingeniería')
+                        Profesora UNAB
+                    @else
+                        Estudiante - {{ rand(8, 9) }}° Semestre
+                    @endif
+                </span>
+                
+                <div class="mentor-avatar">👨‍🏫</div>
+                
+                <div class="mentor-name">{{ $mentor->user->name }}</div>
+                <div class="mentor-specialty">{{ $mentor->program }}</div>
+                <div class="mentor-career">
+                    ⭐ {{ number_format($mentor->average_rating, 1) }} | {{ $mentor->total_sessions }} tutorías
+                </div>
+
+                @if($mentor->subjects->count() > 0)
+                <div class="mentor-subjects">
+                    @foreach($mentor->subjects as $subject)
+                    <span class="subject-tag">{{ $subject->name }}</span>
+                    @endforeach
+                </div>
+                @endif
+
+                <button class="mentor-button" onclick="openBookingModal({{ $mentor->id }}, '{{ $mentor->user->name }}')">
+                    📅 Solicitar Tutoría
+                </button>
+            </div>
+            @endforeach
+        </div>
+        @else
+        <div class="empty-state">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+            <p>No hay mentores disponibles en este momento</p>
+        </div>
+        @endif
     </div>
 
-    <div class="container">
-        <!-- Banner Plan Padrino -->
-        <div class="plan-padrino-banner">
-            <div class="banner-content">
-                <div class="banner-text">
-                    <h2>🤝 Plan Padrino UNAB</h2>
-                    <p>Acompañamiento académico solidario entre estudiantes y profesores</p>
-                </div>
-                <div class="banner-stats">
-                    <div class="stat-box">
-                        <div class="stat-number">52</div>
-                        <div class="stat-text">Mentores activos</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-number">340+</div>
-                        <div class="stat-text">Tutorías realizadas</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-number">100%</div>
-                        <div class="stat-text">Gratuito</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Modal para agendar -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">📅 Agendar Tutoría</div>
+            
+            <form id="bookingForm" onsubmit="submitBooking(event)">
+                @csrf
 
-        <!-- Sección de Búsqueda y Filtros -->
-        <div class="search-section">
-            <div class="search-header">
-                <h1 class="search-title">🔍 Encuentra tu Mentor UNAB</h1>
-                <span class="results-count">52 mentores disponibles</span>
-            </div>
+                <input type="hidden" id="mentor_id" name="mentor_id">
 
-            <!-- Barra de Búsqueda -->
-            <div class="search-bar-container">
-                <div class="search-input-wrapper">
-                    <input type="text" class="search-input" placeholder="Busca por nombre, materia o facultad..." id="searchInput">
-                    <span class="search-icon">🔍</span>
+                <div class="form-group">
+                    <label>Mentor</label>
+                    <input type="text" id="mentor_name" readonly style="background: #f0f0f0;">
                 </div>
-                <button class="btn-search">Buscar</button>
-            </div>
 
-            <!-- Filtros -->
-            <div class="filters-container">
-                <div class="filter-group">
-                    <label class="filter-label">Facultad</label>
-                    <select class="filter-select" id="facultyFilter">
-                        <option value="">Todas las facultades</option>
-                        <option value="ingenieria">Ingeniería</option>
-                        <option value="administracion">Administración</option>
-                        <option value="derecho">Derecho</option>
-                        <option value="ciencias-salud">Ciencias de la Salud</option>
-                        <option value="comunicacion">Comunicación</option>
-                        <option value="educacion">Educación</option>
+                <div class="form-group">
+                    <label for="subject_id">Materia *</label>
+                    <select id="subject_id" name="subject_id" required>
+                        <option value="">Selecciona una materia</option>
+                        @foreach($mentors as $mentor)
+                            @foreach($mentor->subjects as $subject)
+                            <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                            @endforeach
+                        @endforeach
                     </select>
                 </div>
 
-                <div class="filter-group">
-                    <label class="filter-label">Tipo de Mentor</label>
-                    <select class="filter-select" id="mentorTypeFilter">
-                        <option value="">Todos</option>
-                        <option value="estudiante">Estudiante Avanzado</option>
-                        <option value="profesor">Profesor</option>
+                <div class="form-group">
+                    <label for="scheduled_at">Fecha y Hora *</label>
+                    <input type="datetime-local" id="scheduled_at" name="scheduled_at" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="duration">Duración (minutos) *</label>
+                    <select id="duration" name="duration" required>
+                        <option value="">Selecciona duración</option>
+                        <option value="30">30 minutos</option>
+                        <option value="60">1 hora</option>
+                        <option value="90">1.5 horas</option>
+                        <option value="120">2 horas</option>
                     </select>
                 </div>
 
-                <div class="filter-group">
-                    <label class="filter-label">Materia</label>
-                    <select class="filter-select" id="subjectFilter">
-                        <option value="">Todas las materias</option>
-                        <option value="calculo">Cálculo</option>
-                        <option value="fisica">Física</option>
-                        <option value="programacion">Programación</option>
-                        <option value="quimica">Química</option>
-                        <option value="estadistica">Estadística</option>
-                        <option value="ingles">Inglés</option>
-                        <option value="contabilidad">Contabilidad</option>
-                    </select>
-                </div>
-
-                <div class="filter-group">
-                    <label class="filter-label">Modalidad</label>
-                    <select class="filter-select" id="modalityFilter">
-                        <option value="">Todas</option>
-                        <option value="presencial">Presencial (Campus)</option>
+                <div class="form-group">
+                    <label for="type">Tipo de Sesión *</label>
+                    <select id="type" name="type" required>
+                        <option value="">Selecciona tipo</option>
                         <option value="virtual">Virtual</option>
-                        <option value="hibrido">Híbrido</option>
+                        <option value="presencial">Presencial</option>
                     </select>
                 </div>
-            </div>
 
-            <!-- Filtros Activos -->
-            <div class="filter-tags" id="activeTags">
-                <!-- Los tags se agregarán dinámicamente aquí -->
-            </div>
+                <div class="form-group">
+                    <label for="notes">Notas (opcional)</label>
+                    <textarea id="notes" name="notes" placeholder="Cuéntale al mentor qué necesitas..."></textarea>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="closeBookingModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Agendar</button>
+                </div>
+            </form>
         </div>
+    </div>
 
-        <!-- Grid de Mentores -->
-        <div class="mentors-grid" id="mentorsGrid">
-            <!-- Mentor 1 - Estudiante -->
-            <div class="mentor-card">
-                <div class="mentor-header">
-                    <img src="https://ui-avatars.com/api/?name=Carlos+Mendoza&size=80&background=0051a5&color=fff&bold=true" alt="Carlos Mendoza" class="mentor-avatar">
-                    <div class="mentor-info">
-                        <span class="mentor-type-badge">Estudiante - 8° Semestre</span>
-                        <h3 class="mentor-name">Carlos Mendoza</h3>
-                        <p class="mentor-title">📚 Ingeniería de Sistemas</p>
-                        <div class="mentor-rating">
-                            <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <span class="rating-number">5.0</span>
-                            <span class="reviews-count">(24 tutorías)</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="mentor-bio">
-                    Estudiante destacado de Ingeniería de Sistemas con promedio de 4.5. Me apasiona compartir conocimiento y ayudar a mis compañeros de primeros semestres a superar las materias difíciles.
-                </p>
-                <div class="mentor-subjects">
-                    <span class="subject-badge">Programación I-II</span>
-                    <span class="subject-badge">Estructuras de Datos</span>
-                    <span class="subject-badge">Algoritmos</span>
-                </div>
-                <div class="mentor-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">24</div>
-                        <div class="stat-label">Tutorías</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">8°</div>
-                        <div class="stat-label">Semestre</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">4.5</div>
-                        <div class="stat-label">Promedio</div>
-                    </div>
-                </div>
-                <div class="mentor-availability">
-                    <span class="availability-label">📍 Modalidad:</span>
-                    <span>Presencial y Virtual</span>
-                </div>
-                <div class="mentor-availability">
-                    <span class="availability-label">⏰ Disponibilidad:</span>
-                    <span class="availability-status">
-                        <span class="availability-dot"></span>
-                        Disponible esta semana
-                    </span>
-                </div>
-                <div class="mentor-availability">
-                    <span class="availability-label">💰 Costo:</span>
-                    <span class="free-badge">✨ GRATIS</span>
-                </div>
-                <div class="mentor-actions">
-                    <button class="btn-schedule">📅 Solicitar Tutoría</button>
-                    <button class="btn-profile">Ver Perfil</button>
-                </div>
-            </div>
+    <script>
+        function openBookingModal(mentorId, mentorName) {
+            document.getElementById('mentor_id').value = mentorId;
+            document.getElementById('mentor_name').value = mentorName;
+            document.getElementById('bookingModal').classList.add('active');
+        }
 
-            <!-- Mentor 2 - Profesora -->
-            <div class="mentor-card">
-                <div class="mentor-header">
-                    <img src="https://ui-avatars.com/api/?name=Maria+Rodriguez&size=80&background=003d7a&color=fff&bold=true" alt="María Rodríguez" class="mentor-avatar">
-                    <div class="mentor-info">
-                        <span class="mentor-type-badge profesor">Profesora</span>
-                        <h3 class="mentor-name">Dra. María Rodríguez</h3>
-                        <p class="mentor-title">🧮 Facultad de Ingeniería</p>
-                        <div class="mentor-rating">
-                            <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <span class="rating-number">4.9</span>
-                            <span class="reviews-count">(41 tutorías)</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="mentor-bio">
-                    Profesora de la UNAB con 12 años de experiencia. Disfruto apoyar a los estudiantes en su proceso de aprendizaje y superar las dificultades en matemáticas y cálculo.
-                </p>
-                <div class="mentor-subjects">
-                    <span class="subject-badge">Cálculo I-II-III</span>
-                    <span class="subject-badge">Álgebra Lineal</span>
-                    <span class="subject-badge">Ecuaciones Diferenciales</span>
-                </div>
-                <div class="mentor-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">41</div>
-                        <div class="stat-label">Tutorías</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">12</div>
-                        <div class="stat-label">Años UNAB</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">100%</div>
-                        <div class="stat-label">Satisfacción</div>
-                    </div>
-                </div>
-                <div class="mentor-availability">
-                    <span class="availability-label">📍 Modalidad:</span>
-                    <span>Presencial (Oficina B-302)</span>
-                </div>
-                <div class="mentor-availability">
-                    <span class="availability-label">⏰ Disponibilidad:</span>
-                    <span class="availability-status">
-                        <span class="availability-dot"></span>
-                        Lunes y Miércoles 2-4pm
-                    </span>
-                </div>
-                <div class="mentor-availability">
-                    <span class="availability-label">💰 Costo:</span>
-                    <span class="free-badge">✨ GRATIS</span>
-                </div>
-                <div class="mentor-actions">
-                    <button class="btn-schedule">📅 Solicitar Tutoría</button>
-                    <button class="btn-profile">Ver Perfil</button>
-                </div>
-            </div>
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.remove('active');
+        }
 
-            <!-- Mentor 3 - Estudiante -->
-            <div class="mentor-card">
-                <div class="mentor-header">
-                    <img src="https://ui-avatars.com/api/?name=Laura+Garcia&size=80&background=10b981&color=fff&bold=true" alt="Laura García" class="mentor-avatar">
-                    <div class="mentor-info">
-                        <span class="mentor-type-badge">Estudiante - 9° Semestre</span>
-                        <h3 class="mentor-name">Laura García</h3>
-                        <p class="mentor-title">💼 Administración de Empresas</p>
-                        <div class="mentor-rating">
-                            <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <span class="rating-number">4.8</span>
-                            <span class="reviews-count">(18 tutorías)</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="mentor-bio">
-                    Estudiante de Administración apasionada por los números y la gestión financiera. He ayudado a muchos compañeros a entender contabilidad y finanzas de forma práctica.
-                </p>
-                <div class="mentor-subjects">
-                    <span class="subject-badge">Contabilidad I-II</span>
-                    <span class="subject-badge">Costos</span>
-                    <span class="subject-badge">Finanzas</span>
-                </div>
-                <div class="mentor-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">18</div>
-                        <div class="stat-label">Tutorías</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">9°</div>
-                        <div class="stat-label">Semestre</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">4.6</div>
-                        <div class="stat-label">Promedio</div>
-                    </div>
-                </div>
-                <div class="mentor-availability">
-                    <span class="availability-label">📍 Modalidad:</span>
-                    <span>Virtual (Google Meet)</span>
-                </div>
-                <div class="mentor-availability">
+        async function submitBooking(event) {
+            event.preventDefault();
+
+            const formData = new FormData(document.getElementById('bookingForm'));
+
+            try {
+                const response = await fetch('{{ route("session.store") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content || document.querySelector('input[name="_token"]').value,
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('✅ ¡Tutoría agendada exitosamente!');
+                    closeBookingModal();
+                    setTimeout(() => {
+                        window.location.href = '{{ route("sessions") }}';
+                    }, 1000);
+                } else {
+                    alert('❌ Error: ' + (data.message || 'No se pudo agendar la tutoría'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al conectar con el servidor');
+            }
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('bookingModal');
+            if (event.target == modal) {
+                closeBookingModal();
+            }
+        }
+    </script>
+
+</body>
+</html>

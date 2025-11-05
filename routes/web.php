@@ -1,82 +1,73 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MentorController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SessionController;
+use App\Models\TutoringSession;
+use Illuminate\Http\Request;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes - Plan Padrino Digital UNAB
-|--------------------------------------------------------------------------
-*/
 
-// Public routes
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// Authentication routes
+// ============= AUTHENTICATION ROUTES =============
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
-    Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 });
 
-// Protected routes (require authentication)
+// ============= PROTECTED ROUTES (Auth Required) =============
 Route::middleware(['auth'])->group(function () {
-
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Profile
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
-    // Mentors
-    Route::get('/mentors', [MentorController::class, 'index'])->name('mentors');
-    Route::get('/mentor/{id}', [MentorController::class, 'show'])->name('mentor.show');
-
-    // Sessions
-    Route::get('/sessions', [SessionController::class, 'index'])->name('sessions');
-    Route::get('/session/book', [SessionController::class, 'create'])->name('session.book');
-    Route::post('/session/book', [SessionController::class, 'store'])->name('session.store');
-    Route::get('/session/{id}', [SessionController::class, 'show'])->name('session.show');
-    Route::put('/session/{id}', [SessionController::class, 'update'])->name('session.update');
-    Route::delete('/session/{id}', [SessionController::class, 'destroy'])->name('session.cancel');
-
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-});
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-*/
+    // Sessions
+    Route::get('/session', [SessionController::class, 'index'])->name('session.index');
+    Route::get('/session/create', [SessionController::class, 'create'])->name('session.create');
+    Route::post('/session', [SessionController::class, 'store'])->name('session.store');
+    Route::get('/session/{id}', [SessionController::class, 'show'])->name('session.show');
+    Route::put('/session/{id}', [SessionController::class, 'update'])->name('session.update');
+    Route::delete('/session/{id}', [SessionController::class, 'destroy'])->name('session.destroy');
 
-Route::middleware(['auth:sanctum'])->prefix('api')->group(function () {
+    Route::get('/profile', function () {
+        $user = Auth::user();
+        $sessions = TutoringSession::where('student_id', $user->id)
+            ->with(['mentor.user', 'subject'])
+            ->orderBy('scheduled_at', 'desc')
+            ->get();
 
-    // Dashboard API
-    Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);
+        return view('profile', compact('user', 'sessions'));
+    })->name('profile');
 
-    // Profile API
-    Route::get('/profile', [ProfileController::class, 'getProfileData']);
-    Route::put('/profile', [ProfileController::class, 'updateProfileData']);
-    Route::post('/profile/avatar', [ProfileController::class, 'uploadAvatar']);
+// Ruta GET para MOSTRAR el formulario de edición
+Route::get('/profile/edit', function () {
+    $user = Auth::user();
+    $sessions = TutoringSession::where('student_id', $user->id)
+        ->with(['mentor.user', 'subject'])
+        ->orderBy('scheduled_at', 'desc')
+        ->get();
+    
+    return view('profile-edit', compact('user', 'sessions'));
+})->name('profile.edit');
 
-    // Mentors API
-    Route::get('/mentors', [MentorController::class, 'getMentors']);
-    Route::get('/mentor/{id}', [MentorController::class, 'getMentorDetails']);
+// Ruta POST para GUARDAR los cambios
+Route::post('/profile/update', function (Request $request) {
+    $user = Auth::user();
+    $user->name = $request->input('name') ?? $user->name;
+    $user->email = $request->input('email') ?? $user->email;
+    $user->program = $request->input('program') ?? $user->program;
+    $user->bio = $request->input('bio') ?? $user->bio;
+    $user->save();
 
-    // Sessions API
-    Route::get('/sessions', [SessionController::class, 'getSessions']);
-    Route::post('/sessions', [SessionController::class, 'createSession']);
-    Route::get('/session/{id}', [SessionController::class, 'getSessionDetails']);
-    Route::put('/session/{id}/rate', [SessionController::class, 'rateSession']);
+    return redirect()->route('profile')->with('success', '✅ Perfil actualizado exitosamente');
+})->name('profile.update');
+
 });

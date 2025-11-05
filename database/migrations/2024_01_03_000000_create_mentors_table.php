@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('mentors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('faculty_id')->constrained();
+            $table->foreignId('faculty_id')->nullable()->constrained(); // ✅ NULLABLE
             $table->string('program');
             $table->text('bio')->nullable();
             $table->boolean('available')->default(true);
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code')->unique();
-            $table->foreignId('faculty_id')->constrained();
+            $table->foreignId('faculty_id')->nullable()->constrained(); // ✅ NULLABLE
             $table->text('description')->nullable();
             $table->timestamps();
         });

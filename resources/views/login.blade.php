@@ -333,7 +333,7 @@
         <!-- Header -->
         <div class="auth-header">
             <div class="logo-auth">
-                <img src="../images/uwu2.jpeg" alt="SkillLink Logo">
+                <img src="./images/uwu2.jpeg" alt="SkillLink Logo">
             </div>
             <h1>SkillLink</h1>
             <p>Conecta con los mejores mentores</p>
@@ -343,8 +343,8 @@
         <div class="auth-body">
             <!-- Tabs -->
             <div class="tab-container">
-                <button class="tab-button active" onclick="switchTab('login')">Iniciar Sesión</button>
-                <button class="tab-button" onclick="switchTab('register')">Registrarse</button>
+                <button class="tab-button active" id="login-tab" onclick="switchTab('login')">Iniciar Sesión</button>
+                <button class="tab-button" id="register-tab" onclick="switchTab('register')">Registrarse</button>
             </div>
 
             <!-- Login Form -->
@@ -493,169 +493,141 @@
 
     
 <script>
-    // Form handling with Laravel backend
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
+    function switchTab(tab) {
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
 
-    // Handle login form submission
-    async function handleLogin(e) {
-        e.preventDefault();
-        clearError();
+        if (tab === 'login') {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+        } else if (tab === 'register') {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.classList.add('active');
+            loginForm.classList.remove('active');
+        }
+    }
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const button = input.parentElement.querySelector('.toggle-password');
 
-        if (!validateEmail(email)) {
-            showError('login', 'Por favor ingresa un correo UNAB válido (@unab.edu.co)');
+        if (input.type === 'password') {
+            input.type = 'text';
+            button.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            button.textContent = '👁️';
+        }
+    }
+
+    async function handleLogin(event) {
+        event.preventDefault();
+        
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        const remember = document.getElementById('remember-me').checked;
+
+        if (!email || !password) {
+            alert('Por favor completa todos los campos');
             return;
         }
 
         try {
-            const formData = new FormData(loginForm);
-            const response = await fetch('{{ route("login") }}', {
+            const response = await fetch('/login', {
                 method: 'POST',
-                body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    remember: remember
+                })
             });
 
             const data = await response.json();
 
-            if (response.ok) {
-                window.location.href = '{{ route("dashboard") }}';
+            if (response.ok && data.success) {
+                window.location.href = '/dashboard';
             } else {
-                showError('login', data.message || 'Credenciales incorrectas');
+                alert(data.message || 'Error al iniciar sesión');
             }
         } catch (error) {
-            showError('login', 'Error al iniciar sesión. Intenta nuevamente.');
+            console.error('Error:', error);
+            alert('Error al conectar con el servidor');
         }
     }
 
-    // Handle registration form submission
-    async function handleRegister(e) {
-        e.preventDefault();
-        clearError();
+    async function handleRegister(event) {
+        event.preventDefault();
+        
+        const name = document.getElementById('register-name').value;
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+        const confirmPassword = document.getElementById('register-confirm-password').value;
+        const acceptTerms = document.getElementById('accept-terms').checked;
 
-        const name = document.getElementById('registerName').value;
-        const email = document.getElementById('registerEmail').value;
-        const password = document.getElementById('registerPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-
-        if (!validateEmail(email)) {
-            showError('register', 'Debes usar tu correo institucional UNAB (@unab.edu.co)');
+        if (!name || !email || !password || !confirmPassword) {
+            alert('Por favor completa todos los campos');
             return;
         }
 
         if (password !== confirmPassword) {
-            showError('register', 'Las contraseñas no coinciden');
+            alert('Las contraseñas no coinciden');
             return;
         }
 
         if (password.length < 8) {
-            showError('register', 'La contraseña debe tener al menos 8 caracteres');
+            alert('La contraseña debe tener al menos 8 caracteres');
+            return;
+        }
+
+        if (!acceptTerms) {
+            alert('Debes aceptar los términos y condiciones');
             return;
         }
 
         try {
-            const formData = new FormData(registerForm);
-            const response = await fetch('{{ route("register") }}', {
+            const response = await fetch('/register', {
                 method: 'POST',
-                body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password,
+                    password_confirmation: confirmPassword
+                })
             });
 
             const data = await response.json();
 
-            if (response.ok) {
-                window.location.href = '{{ route("dashboard") }}';
+            if (response.ok && data.success) {
+                window.location.href = '/dashboard';
             } else {
-                showError('register', data.message || 'Error en el registro');
+                alert(data.message || 'Error al registrarse');
             }
         } catch (error) {
-            showError('register', 'Error al registrarse. Intenta nuevamente.');
+            console.error('Error:', error);
+            alert('Error al conectar con el servidor');
         }
     }
 
-    // Google OAuth handler
-    async function handleGoogleAuth() {
-        window.location.href = '{{ route("auth.google") }}';
+    function handleGoogleAuth() {
+        window.location.href = '/auth/google';
     }
-
-    // Email validation - must be @unab.edu.co
-    function validateEmail(email) {
-        return email.toLowerCase().endsWith('@unab.edu.co');
-    }
-
-    // Error display
-    function showError(formType, message) {
-        const errorDiv = document.getElementById(formType === 'login' ? 'loginError' : 'registerError');
-        if (errorDiv) {
-            errorDiv.textContent = message;
-            errorDiv.classList.remove('hidden');
-        }
-    }
-
-    function clearError() {
-        document.querySelectorAll('[id$="Error"]').forEach(el => {
-            el.classList.add('hidden');
-        });
-    }
-
-    // Password visibility toggle
-    function togglePassword(inputId) {
-        const input = document.getElementById(inputId);
-        const icon = input.nextElementSibling;
-
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.textContent = '🙈';
-        } else {
-            input.type = 'password';
-            icon.textContent = '👁️';
-        }
-    }
-
-    // Tab switching
-    function switchTab(tab) {
-        const loginTab = document.getElementById('loginTab');
-        const registerTab = document.getElementById('registerTab');
-        const loginForm = document.getElementById('loginFormContainer');
-        const registerForm = document.getElementById('registerFormContainer');
-
-        if (tab === 'login') {
-            loginTab.classList.add('border-blue-600', 'text-blue-600');
-            loginTab.classList.remove('text-gray-500');
-            registerTab.classList.remove('border-blue-600', 'text-blue-600');
-            registerTab.classList.add('text-gray-500');
-            loginForm.classList.remove('hidden');
-            registerForm.classList.add('hidden');
-        } else {
-            registerTab.classList.add('border-blue-600', 'text-blue-600');
-            registerTab.classList.remove('text-gray-500');
-            loginTab.classList.remove('border-blue-600', 'text-blue-600');
-            loginTab.classList.add('text-gray-500');
-            registerForm.classList.remove('hidden');
-            loginForm.classList.add('hidden');
-        }
-        clearError();
-    }
-
-    // Event listeners
-    if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
-    }
-    if (registerForm) {
-        registerForm.addEventListener('submit', handleRegister);
-    }
-
-    // Laravel validation errors display
-    @if($errors->any())
-        showError('{{ old("form_type", "login") }}', '{{ $errors->first() }}');
-    @endif
 </script>
+
 
 </body>
 </html>

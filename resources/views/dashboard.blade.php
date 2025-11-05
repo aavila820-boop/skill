@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkillLink - Dashboard</title>
+    <title>Dashboard - SkillLink UNAB</title>
     <style>
         * {
             margin: 0;
@@ -13,963 +14,820 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            background: #f5f7fa;
+            color: #333;
         }
 
-        /* Header */
-        .header {
+        header {
+            background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            align-items: center;
         }
 
-        .logo-container {
+        .logo-section {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 1rem;
         }
 
-        .logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: contain;
-            background: white;
-            padding: 5px;
-        }
-
-        .logo-text {
-            font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header-nav {
-            display: flex;
-            gap: 25px;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #4b5563;
-            font-weight: 600;
-            transition: all 0.3s;
-            padding: 8px 16px;
-            border-radius: 8px;
-        }
-
-        .nav-link:hover {
-            color: #667eea;
-            background: #f3f4f6;
-        }
-
-        .nav-link.active {
-            color: #667eea;
-            background: #ede9fe;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .notification-btn {
-            position: relative;
+        .logo-icon {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
-            background: #f3f4f6;
-            border: none;
-            cursor: pointer;
+            background: white;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            transition: all 0.3s;
-        }
-
-        .notification-btn:hover {
-            background: #e5e7eb;
-            transform: scale(1.05);
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ef4444;
-            color: white;
-            font-size: 11px;
             font-weight: bold;
-            padding: 3px 6px;
-            border-radius: 10px;
+            color: #0051a5;
         }
 
-        .user-avatar-header {
+        .logo-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
             width: 40px;
             height: 40px;
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
             cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-tabs {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav-tab {
+            padding: 1rem 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
             transition: all 0.3s;
         }
 
-        .user-avatar-header:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        .nav-tab.active {
+            color: #0051a5;
+            border-bottom-color: #0051a5;
         }
 
-        /* Container Principal */
-        .container {
-            max-width: 1400px;
+        .nav-tab:hover {
+            color: #0051a5;
+        }
+
+        .main-container {
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 2rem;
         }
 
-        /* Sección de Bienvenida */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
         .welcome-section {
             background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-        }
-
-        .welcome-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .welcome-text h1 {
-            font-size: 32px;
-            color: #1f2937;
-            margin-bottom: 8px;
-        }
-
-        .welcome-text p {
-            color: #6b7280;
-            font-size: 16px;
-        }
-
-        .date-badge {
-            background: white;
-            padding: 12px 20px;
-            border-radius: 12px;
-            font-weight: 600;
-            color: #667eea;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* Tarjetas de Estadísticas */
+        .welcome-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #0051a5;
+        }
+
+        .welcome-subtitle {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 81, 165, 0.3);
+        }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .stat-card {
             background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--card-color-1), var(--card-color-2));
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
-        }
-
-        .stat-card:nth-child(1) {
-            --card-color-1: #667eea;
-            --card-color-2: #764ba2;
-        }
-
-        .stat-card:nth-child(2) {
-            --card-color-1: #10b981;
-            --card-color-2: #059669;
-        }
-
-        .stat-card:nth-child(3) {
-            --card-color-1: #f59e0b;
-            --card-color-2: #d97706;
-        }
-
-        .stat-card:nth-child(4) {
-            --card-color-1: #ef4444;
-            --card-color-2: #dc2626;
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
+            padding: 1.5rem;
             border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--card-color-1), var(--card-color-2));
-            color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
-        .stat-value {
-            font-size: 32px;
+        .stat-number {
+            font-size: 2.5rem;
             font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 5px;
+            color: #0051a5;
+            margin-bottom: 0.5rem;
         }
 
         .stat-label {
-            color: #6b7280;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        /* Grid Principal */
-        .main-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        /* Gráfico de Progreso */
-        .progress-section {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
+            color: #666;
+            font-weight: 500;
         }
 
         .section-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1f2937;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            border-bottom: 2px solid #0051a5;
+            padding-bottom: 0.5rem;
         }
 
-        .time-filter {
-            display: flex;
-            gap: 10px;
-        }
-
-        .time-btn {
-            padding: 8px 16px;
-            background: #f3f4f6;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #6b7280;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .time-btn.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .time-btn:hover {
-            background: #e5e7eb;
-        }
-
-        .time-btn.active:hover {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-        }
-
-        .chart-container {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            height: 250px;
-            gap: 15px;
-            padding: 20px 0;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        .chart-bar {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .bar {
-            width: 100%;
-            background: linear-gradient(180deg, #667eea, #764ba2);
-            border-radius: 8px 8px 0 0;
-            position: relative;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .bar:hover {
-            opacity: 0.8;
-            transform: scaleY(1.05);
-        }
-
-        .bar-value {
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 12px;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .bar-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #6b7280;
-            margin-top: 8px;
-        }
-
-        /* Próximas Sesiones */
-        .sessions-section {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .session-card {
-            display: flex;
-            gap: 15px;
-            padding: 15px;
-            border-radius: 12px;
-            background: #f9fafb;
-            margin-bottom: 15px;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .session-card:hover {
-            background: #f3f4f6;
-            border-color: #667eea;
-            transform: translateX(5px);
-        }
-
-        .session-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 2px solid #667eea;
-        }
-
-        .session-info {
-            flex: 1;
-        }
-
-        .session-mentor {
-            font-weight: bold;
-            color: #1f2937;
-            font-size: 15px;
-            margin-bottom: 3px;
-        }
-
-        .session-topic {
-            color: #6b7280;
-            font-size: 13px;
-            margin-bottom: 5px;
-        }
-
-        .session-time {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-            color: #667eea;
-            font-weight: 600;
-        }
-
-        .session-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .btn-join {
-            padding: 8px 16px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-
-        .btn-join:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-details {
-            padding: 8px 16px;
-            background: #f3f4f6;
-            color: #4b5563;
-            border: none;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-details:hover {
-            background: #e5e7eb;
-        }
-
-        /* Retos Completados */
-        .challenges-section {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .challenges-grid {
+        .mentors-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
-        .challenge-card {
-            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-            border-radius: 15px;
-            padding: 20px;
+        .mentor-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid #e0e0e0;
             transition: all 0.3s;
             cursor: pointer;
-            border: 2px solid transparent;
         }
 
-        .challenge-card:hover {
+        .mentor-card:hover {
+            border-color: #0051a5;
+            box-shadow: 0 4px 12px rgba(0, 81, 165, 0.2);
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
-            border-color: #667eea;
         }
 
-        .challenge-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+        .mentor-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            margin-bottom: 15px;
+            color: white;
+            font-size: 2rem;
         }
 
-        .challenge-name {
+        .mentor-name {
+            font-size: 1.2rem;
             font-weight: bold;
-            color: #1f2937;
-            font-size: 16px;
-            margin-bottom: 10px;
+            margin-bottom: 0.3rem;
+            color: #333;
         }
 
-        .challenge-progress {
-            margin-bottom: 12px;
+        .mentor-specialty {
+            color: #0051a5;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
         }
 
-        .progress-bar-container {
-            width: 100%;
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 8px;
+        .mentor-subjects {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1rem;
         }
 
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border-radius: 10px;
-            transition: width 1s ease;
-        }
-
-        .progress-text {
-            font-size: 12px;
-            color: #6b7280;
+        .subject-tag {
+            background: #e3f2fd;
+            color: #0051a5;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
             font-weight: 600;
         }
 
-        .challenge-footer {
+        .mentor-rating {
+            color: #ff9800;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .book-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: #0051a5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .book-btn:hover {
+            background: #003d7a;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Modal Styles */
+        #bookingModal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            width: 95%;
+            max-width: 600px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #0051a5;
+            padding-bottom: 1rem;
         }
 
-        .challenge-points {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-            color: #f59e0b;
+        .modal-title {
+            font-size: 1.8rem;
             font-weight: bold;
+            color: #0051a5;
         }
 
-        .challenge-date {
-            font-size: 12px;
-            color: #9ca3af;
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
 
-            .header {
-                flex-direction: column;
-                gap: 15px;
-            }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
 
-            .header-nav {
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
 
-            .welcome-header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0051a5;
+            box-shadow: 0 0 0 3px rgba(0, 81, 165, 0.1);
+        }
+
+        .mentor-info {
+            background: #f0f7ff;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #0051a5;
+        }
+
+        .mentor-info-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .mentor-info-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #0051a5;
+            margin-top: 0.3rem;
+        }
+
+        .modal-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-btn {
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .modal-btn-cancel {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .modal-btn-submit {
+            background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
+            color: white;
         }
 
         @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .challenges-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .time-filter {
-                flex-wrap: wrap;
-            }
-
-            .session-card {
+            .header-container {
                 flex-direction: column;
+                gap: 1rem;
             }
 
-            .session-actions {
-                flex-direction: row;
+            .mentors-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 90%;
+                padding: 1.5rem;
             }
         }
     </style>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center gap-8">
-                    <a href="/dashboard" class="text-2xl font-bold text-blue-600">
-                        Plan Padrino UNAB
-                    </a>
-                    <div class="hidden md:flex gap-6">
-                        <a href="/dashboard" class="text-gray-700 hover:text-blue-600 transition font-medium border-b-2 border-blue-600">
-                            🏠 Dashboard
-                        </a>
-                        <a href="/mentors" class="text-gray-700 hover:text-blue-600 transition">
-                            🔍 Buscar Mentores
-                        </a>
-                        <a href="/sessions" class="text-gray-700 hover:text-blue-600 transition">
-                            📅 Mis Sesiones
-                        </a>
-                        <a href="/profile" class="text-gray-700 hover:text-blue-600 transition">
-                            👤 Mi Perfil
-                        </a>
-                    </div>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="text-right hidden sm:block">
-                        <p class="text-sm font-medium text-gray-700">{{ Auth::user()->name }}</p>
-                        <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
-                    </div>
-                    <img src="{{ Auth::user()->avatar ?? '/img/default-avatar.png' }}" 
-                         alt="Avatar" 
-                         class="w-10 h-10 rounded-full border-2 border-blue-500">
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="text-gray-600 hover:text-red-600 transition">
-                            🚪 Salir
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </nav>
 
 <body>
     <!-- Header -->
-    <div class="header">
-        <div class="logo-container">
-            <img src="./images/uwu2.jpeg" alt="SkillLink Logo" class="logo">
-            <div class="logo-text">SkillLink</div>
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="logo-icon">SK</div>
+                <div class="logo-title">SkillLink UNAB</div>
+            </div>
+            <div class="nav-right">
+                <div class="user-info">
+                    <div class="user-avatar">{{ substr($user->name, 0, 1) }}</div>
+                    <div>
+                        <div style="font-weight: 600;">{{ $user->name }}</div>
+                        <div style="font-size: 0.85rem; opacity: 0.9;">{{ $user->email }}</div>
+                    </div>
+                </div>
+                <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+                    @csrf
+                    <button type="submit" class="logout-btn">Cerrar Sesión</button>
+                </form>
+            </div>
         </div>
-        <nav class="header-nav">
-            <a href="/mentors" class="nav-link active">Dashboard</a>
-            <a href="/mentors" class="nav-link">Buscar Mentores</a>
-            <a href="/mentors" class="nav-link">Mis Mentorías</a>
-            <a href="/mentors" class="nav-link">Mi Perfil</a>
-        </nav>
-        <div class="header-actions">
-            <button class="notification-btn">
-                🔔
-                <span class="notification-badge">3</span>
-            </button>
-            <img src="https://ui-avatars.com/api/?name=Maria+Silva&size=40&background=667eea&color=fff&bold=true" alt="Usuario" class="user-avatar-header">
-        </div>
+    </header>
+
+    <!-- Navigation tabs -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchTab('overview', event)">📊 Resumen</button>
+        <button class="nav-tab" onclick="switchTab('mentors', event)">👨‍🏫 Buscar Mentores</button>
+        <button class="nav-tab" onclick="switchTab('sessions', event)">📅 Mis Tutorías</button>
+        <button class="nav-tab" onclick="switchTab('profile', event)">👤 Mi Perfil</button>
     </div>
 
-    <div class="container">
-        <!-- Sección de Bienvenida -->
-        <div class="welcome-section">
-            <div class="welcome-header">
-                <div class="welcome-text">
-                    <h1>👋 ¡Bienvenida de nuevo, María!</h1>
-                    <p>Sigue aprendiendo y creciendo profesionalmente</p>
+    <!-- Main content -->
+    <div class="main-container">
+
+        <!-- OVERVIEW Tab -->
+        <div id="overview" class="section active">
+            <div class="welcome-section">
+                <h1 class="welcome-title">¡Bienvenido, {{ $user->name }}! 👋</h1>
+                <p class="welcome-subtitle">Selecciona una opción para continuar con tu experiencia de aprendizaje</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">{{ $completedSessions }}</div>
+                    <div class="stat-label">Tutorías Completadas</div>
                 </div>
-                <div class="date-badge" id="currentDate">
-                    📅 Martes, 21 de Octubre 2025
+                <div class="stat-card">
+                    <div class="stat-number">{{ count($upcomingSessions) }}</div>
+                    <div class="stat-label">Próximas Tutorías</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ number_format($totalHours, 1) }}</div>
+                    <div class="stat-label">Horas de Estudio</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ $averageRating ? number_format($averageRating, 1) : 'N/A' }}</div>
+                    <div class="stat-label">Calificación Promedio</div>
                 </div>
             </div>
         </div>
 
-        <!-- Tarjetas de Estadísticas -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">📚</div>
-                <div class="stat-value">5</div>
-                <div class="stat-label">Mentorías Activas</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">✅</div>
-                <div class="stat-value">24</div>
-                <div class="stat-label">Sesiones Completadas</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">🏆</div>
-                <div class="stat-value">12</div>
-                <div class="stat-label">Retos Completados</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">⏰</div>
-                <div class="stat-value">48h</div>
-                <div class="stat-label">Horas de Aprendizaje</div>
+        <!-- MENTORS Tab -->
+        <div id="mentors" class="section">
+            <h2 class="section-title">👨‍🏫 Buscar Mentores</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Elige un mentor para agendar tu tutoría</p>
+
+            @if (count($mentors) > 0)
+                <div class="mentors-grid">
+                    @foreach ($mentors as $mentor)
+                        <div class="mentor-card">
+                            <div class="mentor-avatar">👨‍🏫</div>
+                            <div class="mentor-name">{{ $mentor->user->name }}</div>
+                            <div class="mentor-specialty">{{ $mentor->program }}</div>
+                            <div style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
+                                ⭐ {{ number_format($mentor->average_rating, 1) }} | {{ $mentor->total_sessions }}
+                                tutorías
+                            </div>
+
+                            @if ($mentor->subjects->count() > 0)
+                                <div class="mentor-subjects">
+                                    @foreach ($mentor->subjects as $subject)
+                                        <span class="subject-tag">{{ $subject->name }}</span>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            <button class="book-btn"
+                                onclick="openBookingModal({{ $mentor->id }}, '{{ $mentor->user->name }}')">
+                                📅 Solicitar Tutoría
+                            </button>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔍</div>
+                    <p>No hay mentores disponibles en este momento</p>
+                </div>
+            @endif
+        </div>
+
+        <!-- SESSIONS Tab -->
+        <div id="sessions" class="section">
+            <h2 class="section-title">📅 Mis Tutorías</h2>
+            @if (count($upcomingSessions) > 0)
+                <div style="display: grid; gap: 1rem;">
+                    @foreach ($upcomingSessions as $session)
+                        <div
+                            style="background: white; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #0051a5;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                <div style="font-weight: 600; color: #0051a5;">
+                                    {{ $session->mentor->user->name }} - {{ $session->subject->name }}
+                                </div>
+                                <span
+                                    style="background: #d4edda; color: #155724; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                                    {{ ucfirst($session->status) }}
+                                </span>
+                            </div>
+                            <div
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; font-size: 0.9rem; color: #666;">
+                                <div><strong>📅</strong> {{ $session->scheduled_at->format('d/m/Y H:i') }}</div>
+                                <div><strong>⏱️</strong> {{ $session->duration }} min</div>
+                                <div><strong>🌐</strong> {{ ucfirst($session->type) }}</div>
+                                @if ($session->location)
+                                    <div><strong>📍</strong> {{ $session->location }}</div>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="empty-state">
+                    <div class="empty-state-icon">📭</div>
+                    <p>No tienes tutorías agendadas</p>
+                    <button class="btn btn-primary" onclick="switchTab('mentors', event)" style="margin-top: 1rem;">
+                        Buscar Mentor Ahora
+                    </button>
+                </div>
+            @endif
+        </div>
+
+        <!-- PROFILE Tab -->
+        <div id="profile" class="section">
+            <h2 class="section-title">👤 Mi Perfil</h2>
+            <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 500px;">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="font-weight: 600; color: #333;">Nombre</label>
+                    <div style="padding: 0.8rem; background: #f9f9f9; border-radius: 8px; margin-top: 0.5rem;">
+                        {{ $user->name }}
+                    </div>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="font-weight: 600; color: #333;">Email</label>
+                    <div style="padding: 0.8rem; background: #f9f9f9; border-radius: 8px; margin-top: 0.5rem;">
+                        {{ $user->email }}
+                    </div>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="font-weight: 600; color: #333;">Programa</label>
+                    <div style="padding: 0.8rem; background: #f9f9f9; border-radius: 8px; margin-top: 0.5rem;">
+                        {{ $user->program ?? 'No especificado' }}
+                    </div>
+                </div>
+                <a href="/profile/edit" class="btn btn-primary">✏️ Editar Perfil</a>
+
             </div>
         </div>
 
-        <!-- Grid Principal -->
-        <div class="main-grid">
-            <!-- Gráfico de Progreso -->
-            <div class="progress-section">
-                <div class="section-header">
-                    <h2 class="section-title">📈 Tu Progreso Semanal</h2>
-                    <div class="time-filter">
-                        <button class="time-btn active">Semana</button>
-                        <button class="time-btn">Mes</button>
-                        <button class="time-btn">Año</button>
-                    </div>
-                </div>
-                <div class="chart-container" id="chartContainer">
-                    <div class="chart-bar">
-                        <div class="bar" style="height: 60%;">
-                            <span class="bar-value">3h</span>
-                        </div>
-                        <span class="bar-label">L</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="bar" style="height: 80%;">
-                            <span class="bar-value">4h</span>
-                        </div>
-                        <span class="bar-label">M</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="bar" style="height: 50%;">
-                            <span class="bar-value">2.5h</span>
-                        </div>
-                        <span class="bar-label">M</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="bar" style="height: 90%;">
-                            <span class="bar-value">4.5h</span>
-                        </div>
-                        <span class="bar-label">J</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="bar" style="height: 70%;">
-                            <span class="bar-value">3.5h</span>
-                        </div>
-                        <span class="bar-label">V</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="bar" style="height: 40%;">
-                            <span class="bar-value">2h</span>
-                        </div>
-                        <span class="bar-label">S</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="bar" style="height: 30%;">
-                            <span class="bar-value">1.5h</span>
-                        </div>
-                        <span class="bar-label">D</span>
-                    </div>
-                </div>
+    </div>
+
+    <!-- Modal para agendar tutorías -->
+    <div id="bookingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">📅 Agendar Tutoría</div>
+                <button class="modal-close" onclick="closeBookingModal()">✕</button>
             </div>
 
-            <!-- Próximas Sesiones -->
-            <div class="sessions-section">
-                <div class="section-header">
-                    <h2 class="section-title">📅 Próximas Sesiones</h2>
+            <form id="bookingForm" onsubmit="submitBooking(event)">
+                @csrf
+                <input type="hidden" id="mentor_id" name="mentor_id">
+
+                <div class="mentor-info">
+                    <div class="mentor-info-label">Mentor Seleccionado:</div>
+                    <div class="mentor-info-name" id="mentor_name"></div>
                 </div>
-                <div class="session-card">
-                    <img src="https://ui-avatars.com/api/?name=Carlos+Mendez&size=50&background=667eea&color=fff&bold=true" alt="Carlos Méndez" class="session-avatar">
-                    <div class="session-info">
-                        <div class="session-mentor">Carlos Méndez</div>
-                        <div class="session-topic">Estrategias de Marketing Digital</div>
-                        <div class="session-time">🕐 Hoy • 3:00 PM</div>
-                    </div>
-                    <div class="session-actions">
-                        <button class="btn-join">🎥 Unirse</button>
-                        <button class="btn-details">Ver detalles</button>
+
+                <div class="form-group">
+                    <label for="subject_id">Materia *</label>
+                    <select id="subject_id" name="subject_id" required>
+                        <option value="">-- Selecciona una materia --</option>
+                        @foreach ($mentors as $mentor)
+                            @foreach ($mentor->subjects as $subject)
+                                <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                            @endforeach
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="scheduled_date">📅 Fecha *</label>
+                    <input type="date" id="scheduled_date" name="scheduled_date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="scheduled_time">🕐 Hora *</label>
+                    <input type="time" id="scheduled_time" name="scheduled_time" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="duration">⏱️ Duración *</label>
+                    <select id="duration" name="duration" required>
+                        <option value="">-- Selecciona duración --</option>
+                        <option value="30">30 minutos</option>
+                        <option value="60">1 hora</option>
+                        <option value="90">1 hora 30 minutos</option>
+                        <option value="120">2 horas</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>🌐 Tipo de Sesión *</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+                        <label
+                            style="display: flex; align-items: center; cursor: pointer; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-weight: 500;">
+                            <input type="radio" name="type" value="virtual" required
+                                style="margin-right: 0.5rem;">
+                            Virtual
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; cursor: pointer; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; font-weight: 500;">
+                            <input type="radio" name="type" value="presencial" required
+                                style="margin-right: 0.5rem;">
+                            Presencial
+                        </label>
                     </div>
                 </div>
 
-                <div class="session-card">
-                    <img src="https://ui-avatars.com/api/?name=Ana+Lopez&size=50&background=764ba2&color=fff&bold=true" alt="Ana López" class="session-avatar">
-                    <div class="session-info">
-                        <div class="session-mentor">Ana López</div>
-                        <div class="session-topic">Diseño UX/UI Avanzado</div>
-                        <div class="session-time">🕐 Mañana • 10:00 AM</div>
-                    </div>
-                    <div class="session-actions">
-                        <button class="btn-details">Ver detalles</button>
-                    </div>
+                <div class="form-group">
+                    <label for="location">📍 Lugar / Ubicación</label>
+                    <input type="text" id="location" name="location"
+                        placeholder="Ej: Biblioteca, Sala 301, Link de Zoom...">
                 </div>
 
-                <div class="session-card">
-                    <img src="https://ui-avatars.com/api/?name=Luis+Torres&size=50&background=10b981&color=fff&bold=true" alt="Luis Torres" class="session-avatar">
-                    <div class="session-info">
-                        <div class="session-mentor">Luis Torres</div>
-                        <div class="session-topic">Desarrollo de Apps con React</div>
-                        <div class="session-time">🕐 Jueves • 4:30 PM</div>
-                    </div>
-                    <div class="session-actions">
-                        <button class="btn-details">Ver detalles</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Retos Completados -->
-        <div class="challenges-section">
-            <div class="section-header">
-                <h2 class="section-title">🏆 Retos Completados</h2>
-            </div>
-            <div class="challenges-grid">
-                <div class="challenge-card">
-                    <div class="challenge-icon">🎯</div>
-                    <div class="challenge-name">Primer Sprint Completado</div>
-                    <div class="challenge-progress">
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill" style="width: 100%;"></div>
-                        </div>
-                        <div class="progress-text">100% Completado</div>
-                    </div>
-                    <div class="challenge-footer">
-                        <div class="challenge-points">⭐ +50 puntos</div>
-                        <div class="challenge-date">15 Oct 2025</div>
-                    </div>
+                <div class="form-group">
+                    <label for="notes">📝 Notas adicionales</label>
+                    <textarea id="notes" name="notes" placeholder="Cuéntale al mentor qué necesitas ayuda..."
+                        style="min-height: 100px; resize: vertical;"></textarea>
                 </div>
 
-                <div class="challenge-card">
-                    <div class="challenge-icon">💡</div>
-                    <div class="challenge-name">Proyecto de Marketing</div>
-                    <div class="challenge-progress">
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill" style="width: 100%;"></div>
-                        </div>
-                        <div class="progress-text">100% Completado</div>
-                    </div>
-                    <div class="challenge-footer">
-                        <div class="challenge-points">⭐ +75 puntos</div>
-                        <div class="challenge-date">12 Oct 2025</div>
-                    </div>
+                <div class="modal-buttons">
+                    <button type="button" class="modal-btn modal-btn-cancel"
+                        onclick="closeBookingModal()">Cancelar</button>
+                    <button type="submit" class="modal-btn modal-btn-submit">✓ Agendar Tutoría</button>
                 </div>
-
-                <div class="challenge-card">
-                    <div class="challenge-icon">🚀</div>
-                    <div class="challenge-name">Lanzamiento de MVP</div>
-                    <div class="challenge-progress">
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill" style="width: 100%;"></div>
-                        </div>
-                        <div class="progress-text">100% Completado</div>
-                    </div>
-                    <div class="challenge-footer">
-                        <div class="challenge-points">⭐ +100 puntos</div>
-                        <div class="challenge-date">8 Oct 2025</div>
-                    </div>
-                </div>
-
-                <div class="challenge-card">
-                    <div class="challenge-icon">📊</div>
-                    <div class="challenge-name">Análisis de Datos</div>
-                    <div class="challenge-progress">
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill" style="width: 100%;"></div>
-                        </div>
-                        <div class="progress-text">100% Completado</div>
-                    </div>
-                    <div class="challenge-footer">
-                        <div class="challenge-points">⭐ +60 puntos</div>
-                        <div class="challenge-date">5 Oct 2025</div>
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
     <script>
-        // Actualizar fecha actual
-        function updateCurrentDate() {
-            const dateElement = document.getElementById('currentDate');
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const currentDate = new Date().toLocaleDateString('es-ES', options);
-            const capitalizedDate = currentDate.charAt(0).toUpperCase() + currentDate.slice(1);
-            dateElement.textContent = `📅 ${capitalizedDate}`;
+        function switchTab(tabName, event) {
+            event.preventDefault();
+
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
         }
 
-        updateCurrentDate();
+        function openBookingModal(mentorId, mentorName) {
+            document.getElementById('mentor_id').value = mentorId;
+            document.getElementById('mentor_name').textContent = mentorName;
+            document.getElementById('bookingModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
 
-        // Animación de barras de progreso
-        window.addEventListener('load', function() {
-            const progressBars = document.querySelectorAll('.progress-bar-fill');
-            progressBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0%';
+        function closeBookingModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+            document.getElementById('bookingForm').reset();
+            document.body.style.overflow = 'auto';
+        }
+
+        async function submitBooking(event) {
+            event.preventDefault();
+
+            const mentorId = document.getElementById('mentor_id').value;
+            const subjectId = document.getElementById('subject_id').value;
+            const date = document.getElementById('scheduled_date').value;
+            const time = document.getElementById('scheduled_time').value;
+            const duration = document.getElementById('duration').value;
+            const type = document.querySelector('input[name="type"]:checked');
+
+            if (!mentorId || !subjectId || !date || !time || !duration || !type) {
+                alert('❌ Por favor completa todos los campos requeridos (*)');
+                return;
+            }
+
+            const scheduled_at = `${date}T${time}`;
+
+            const formData = new FormData();
+            formData.append('mentor_id', mentorId);
+            formData.append('subject_id', subjectId);
+            formData.append('scheduled_at', scheduled_at);
+            formData.append('duration', duration);
+            formData.append('type', type.value);
+            formData.append('location', document.getElementById('location').value);
+            formData.append('notes', document.getElementById('notes').value);
+
+            try {
+                const response = await fetch('/session', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                // Cierra el modal inmediatamente
+                closeBookingModal();
+
+                // Muestra mensaje de éxito
+                alert('✅ ¡Tutoría agendada exitosamente!');
+
+                // Recarga la página después de 1 segundo
                 setTimeout(() => {
-                    bar.style.width = width;
-                }, 100);
-            });
+                    location.reload();
+                }, 1000);
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al conectar con el servidor');
+            }
+
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('bookingModal');
+            if (event.target === modal) {
+                closeBookingModal();
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeBookingModal();
+            }
         });
 
-        // Navegación
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('scheduled_date').setAttribute('min', today);
         });
+    </script>
 
-        // Filtro de tiempo
-        document.querySelectorAll('.time-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                // Aquí se actualizaría el gráfico según el periodo seleccionado
-            });
-        });
+</body>
 
-        // Botón de notificaciones
-        document.querySelector('.notification-btn').addEventListener('click', function() {
-            alert('🔔 Tienes 3 notificaciones:\n\n1. Nueva sesión programada con Carlos Méndez\n2. Reto completado: +50 puntos\n3. Recordatorio: Sesión en 30 minutos');
-        });
-
-        // Botón unirse a sesión
-        document.querySelectorAll('.btn-join').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                alert('🎥 Iniciando videollamada...\n\n¡Conectando con tu mentor!');
-            });
-        });
-
-        // Botón ver detalles
-        document.querySelectorAll('.btn-details').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const sessionCard = this.closest('.session-card');
-                const mentor = sessionCard.querySelector('.session-mentor').textContent;
-                const topic = sessionCard.querySelector('.session-topic').textContent;
-                alert(`📋 Detalles de la sesión:\n\nMentor: ${mentor}\nTema: ${topic}\n\n✓ Duración: 1 hora\n✓ Modalidad: Virtual\n✓ Materiales: Incluidos`);
-            });
-        });
-
-        // Click en tarjeta de sesión
-        document.querySelectorAll('.session-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const mentor = this.querySelector('.session-mentor').textContent;
-                alert(`📅 Abriendo detalles de sesión con ${mentor}`);
-            });
-        });
-
-        // Click en tarjetas de estadísticas
-        document.querySelectorAll('.stat-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const label = this.querySelector('.stat-label').textContent;
-                alert(`📊 Ver detalles de: ${label}`);
-            });
-        });
-
-        // Click en tarjetas de retos
-        document.querySelectorAll('.challenge-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const name = this.querySelector('.challenge-name').textContent;
-                const points = this.querySelector('.challenge-points').textContent;
-                alert(`🏆 ${name}\n\n${points}\n\n¡Felicitaciones por completar este reto!`);
-            });
-        });
-
-        // Hover en barras del gráfico
-        document.querySelectorAll('.bar').forEach(bar => {
-            bar.addEventListener('click', function() {
-                const value = this.querySelector('.bar-value').textContent;
-                const label = this.closest('.chart-bar').querySelector('.bar-label').textContent;
+</html>
