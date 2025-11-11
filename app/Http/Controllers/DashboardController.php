@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mentor;
+use App\Models\TutoringSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\TutoringSession;
-use App\Models\Mentor;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-        
-        // Cargar la relación mentor
         $user->load('mentor');
-        
+
         // Verificar si el usuario tiene un perfil de mentor creado
         if ($user->role === 'mentor' && $user->mentor !== null) {
             return $this->mentorDashboard($user);
         }
-        
+
         // Si es estudiante o no tiene mentor profile
         return $this->studentDashboard($user);
     }
@@ -30,97 +28,112 @@ class DashboardController extends Controller
      */
     private function studentDashboard($user)
     {
-        // Sesiones próximas (donde el usuario es ESTUDIANTE)
+        $now = now();
+
+        // Separar tutorías activas (futuras o de hoy) vs expiradas (pasadas)
         $upcomingSessions = TutoringSession::where('student_id', $user->id)
-            ->where('status', '!=', 'cancelled')
+            ->where('scheduled_at', '>=', $now)
             ->with(['mentor.user', 'subject'])
             ->orderBy('scheduled_at', 'asc')
             ->get();
 
-        // Sesiones completadas
+        $expiredSessions = TutoringSession::where('student_id', $user->id)
+            ->where('scheduled_at', '<', $now)
+            ->with(['mentor.user', 'subject'])
+            ->orderBy('scheduled_at', 'desc')
+            ->get();
+
+        // Buscar mentores disponibles
+        $mentors = Mentor::with(['user', 'subjects'])
+            ->where('user_id', '!=', $user->id)
+            ->get();
+
+        // Stats
         $completedSessions = TutoringSession::where('student_id', $user->id)
             ->where('status', 'completed')
             ->count();
 
-        // Total de horas
         $totalHours = TutoringSession::where('student_id', $user->id)
             ->where('status', 'completed')
             ->sum('duration') / 60;
 
-        // Promedio de calificaciones
         $averageRating = TutoringSession::where('student_id', $user->id)
             ->where('status', 'completed')
             ->whereNotNull('rating')
             ->avg('rating');
 
-        // Mentores disponibles (TODOS los mentores con available = true)
-        $mentors = Mentor::where('available', true)
-            ->with(['user', 'subjects'])
-            ->get();
-
         return view('dashboard', compact(
             'user',
             'upcomingSessions',
+            'expiredSessions',
+            'mentors',
             'completedSessions',
             'totalHours',
-            'averageRating',
-            'mentors'
+            'averageRating'
         ));
     }
 
     /**
      * Dashboard para mentores
      */
-   private function mentorDashboard($user)
-{
-    $mentor = $user->mentor;
+    private function mentorDashboard($user)
+    {
+        $mentor = $user->mentor;
+        $now = now();
 
-    // Tutorías que tiene que DAR (pending o confirmed)
-    $tutoringsToDo = TutoringSession::where('mentor_id', $mentor->id)
-        ->whereIn('status', ['pending', 'confirmed'])
-        ->with(['student', 'subject'])
-        ->orderBy('scheduled_at', 'asc')
-        ->get();
+        // Tutorías que tiene que dar (pending o confirmed Y FUTURAS)
+        $tutoringsToDo = TutoringSession::where('mentor_id', $mentor->id)
+            ->whereIn('status', ['pending', 'confirmed'])
+            ->where('scheduled_at', '>=', $now)
+            ->with(['student', 'subject'])
+            ->orderBy('scheduled_at', 'asc')
+            ->get();
 
-    // Tutorías que va a RECIBIR (donde él es estudiante)
-    $tutoriasARecibir = TutoringSession::where('student_id', $user->id)
-        ->where('status', '!=', 'cancelled')
-        ->with(['mentor.user', 'subject'])
-        ->orderBy('scheduled_at', 'asc')
-        ->get();
+        // Tutorías EXPIRADAS (ya pasaron de fecha)
+        $expiredSessions = TutoringSession::where('mentor_id', $mentor->id)
+            ->where('scheduled_at', '<', $now)
+            ->with(['student', 'subject'])
+            ->orderBy('scheduled_at', 'desc')
+            ->get();
 
-    // Tutorías completadas
-    $completedSessions = TutoringSession::where('mentor_id', $mentor->id)
-        ->where('status', 'completed')
-        ->count();
+        // Tutorías completadas
+        $completedSessions = TutoringSession::where('mentor_id', $mentor->id)
+            ->where('status', 'completed')
+            ->count();
 
-    // Total de horas dictadas
-    $totalHours = TutoringSession::where('mentor_id', $mentor->id)
-        ->where('status', 'completed')
-        ->sum('duration') / 60;
+        // Total de horas dictadas
+        $totalHours = TutoringSession::where('mentor_id', $mentor->id)
+            ->where('status', 'completed')
+            ->sum('duration') / 60;
 
-    // Calificación promedio
-    $averageRating = TutoringSession::where('mentor_id', $mentor->id)
-        ->where('status', 'completed')
-        ->whereNotNull('rating')
-        ->avg('rating');
+        // Calificación promedio
+        $averageRating = TutoringSession::where('mentor_id', $mentor->id)
+            ->where('status', 'completed')
+            ->whereNotNull('rating')
+            ->avg('rating');
 
-    // Otros mentores disponibles
-    $mentors = Mentor::where('available', true)
-        ->where('id', '!=', $mentor->id)
-        ->with(['user', 'subjects'])
-        ->get();
+        // Tutorías que voy a RECIBIR como estudiante
+        $tutoriasARecibir = TutoringSession::where('student_id', $user->id)
+            ->where('scheduled_at', '>=', $now)
+            ->with(['mentor.user', 'subject'])
+            ->orderBy('scheduled_at', 'asc')
+            ->get();
 
-    return view('mentor-dashboard', compact(
-        'user',
-        'mentor',
-        'tutoringsToDo',
-        'tutoriasARecibir',
-        'completedSessions',
-        'totalHours',
-        'averageRating',
-        'mentors'
-    ));
-}
+        // Otros mentores disponibles (para que también puedan solicitar)
+        $mentors = Mentor::where('user_id', '!=', $user->id)
+            ->with(['user', 'subjects'])
+            ->get();
 
+        return view('mentor-dashboard', compact(
+            'user',
+            'mentor',
+            'tutoringsToDo',
+            'expiredSessions',
+            'completedSessions',
+            'totalHours',
+            'averageRating',
+            'tutoriasARecibir',
+            'mentors'
+        ));
+    }
 }

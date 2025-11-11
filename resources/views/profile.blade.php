@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,21 +14,30 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             color: #333;
         }
 
+        /* ========== HEADER CON COLORES UNAB ========== */
         header {
-            background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
+            background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
             color: white;
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             text-align: center;
             margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
         }
 
         header h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+            margin-bottom: 0.8rem;
+            font-weight: 800;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+        }
+
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
         }
 
         .container {
@@ -36,26 +46,49 @@
             padding: 0 1rem;
         }
 
+        /* Sección de perfil mejorada */
         .profile-section {
             background: white;
-            padding: 2rem;
-            border-radius: 12px;
+            padding: 2.5rem;
+            border-radius: 20px;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid;
+            border-image: linear-gradient(90deg, #FF8C00, #9B30FF);
+            border-image-slice: 1;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .section-title {
-            font-size: 1.5rem;
-            color: #0051a5;
+            font-size: 1.7rem;
+            font-weight: 800;
             margin-bottom: 1.5rem;
-            border-bottom: 2px solid #0051a5;
-            padding-bottom: 0.5rem;
+            background: linear-gradient(135deg, #FF8C00, #9B30FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 2px solid;
+            border-image: linear-gradient(90deg, #FF8C00, #9B30FF);
+            border-image-slice: 1;
+            padding-bottom: 0.8rem;
         }
 
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .info-item {
@@ -64,143 +97,223 @@
         }
 
         .info-label {
-            font-weight: 600;
-            color: #0051a5;
+            font-weight: 700;
+            color: #9B30FF;
             font-size: 0.9rem;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .info-value {
-            color: #666;
-            font-size: 1rem;
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: 600;
         }
 
+        /* Grid de estadísticas mejorado */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #e8f4ff 0%, #f0f8ff 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            padding: 1.8rem;
+            border-radius: 15px;
             text-align: center;
-            border-left: 4px solid #0051a5;
+            border-left: 5px solid #FF8C00;
+            box-shadow: 0 3px 12px rgba(255, 140, 0, 0.15);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(255, 140, 0, 0.25);
         }
 
         .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #0051a5;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF8C00, #9B30FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
         }
 
         .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
+            color: #333;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
+        /* Tarjetas de sesión mejoradas */
         .session-card {
-            background: #f9f9f9;
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid #0051a5;
-            margin-bottom: 1rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 5px solid;
+            border-image: linear-gradient(180deg, #FF8C00, #9B30FF);
+            border-image-slice: 1;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .session-card:hover {
+            box-shadow: 0 6px 16px rgba(155, 48, 255, 0.15);
+            transform: translateX(5px);
         }
 
         .session-header {
             display: flex;
             justify-content: space-between;
             align-items: start;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         .session-title {
-            font-weight: 600;
-            color: #0051a5;
+            font-weight: 700;
+            color: #FF8C00;
+            font-size: 1.1rem;
         }
 
         .session-status {
             display: inline-block;
-            padding: 0.2rem 0.6rem;
-            border-radius: 15px;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
             font-size: 0.8rem;
-            font-weight: 600;
-            background: #d4edda;
+            font-weight: 700;
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
             color: #155724;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .session-status.pending {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #856404;
+        }
+
+        .session-status.completed {
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+            color: #0c5460;
         }
 
         .session-details {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 0.5rem;
-            font-size: 0.9rem;
+            gap: 1rem;
+            font-size: 0.95rem;
             color: #666;
         }
 
         .session-detail-item {
             display: flex;
-            gap: 0.3rem;
+            gap: 0.5rem;
+            font-weight: 500;
         }
 
         .empty-state {
             text-align: center;
-            padding: 2rem;
+            padding: 3rem 2rem;
             color: #999;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-state-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
         }
 
         .action-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 1.2rem;
+            margin-top: 2.5rem;
         }
 
         .btn {
-            padding: 0.8rem;
+            padding: 1rem;
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 12px;
+            font-weight: 700;
             cursor: pointer;
             text-decoration: none;
             text-align: center;
             transition: all 0.3s;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn-primary {
-            background: #0051a5;
+            background: linear-gradient(135deg, #FF8C00, #FFA500);
             color: white;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
         }
 
         .btn-primary:hover {
-            background: #003d7a;
+            background: linear-gradient(135deg, #FFA500, #FF8C00);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
         }
 
         .btn-secondary {
-            background: #f0f0f0;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
             color: #333;
+            border: 2px solid #e0e0e0;
         }
 
         .btn-secondary:hover {
             background: #e0e0e0;
+            border-color: #FF8C00;
+            color: #FF8C00;
+            transform: translateY(-2px);
         }
 
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 600px) {
             header h1 {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
             }
 
             .action-buttons {
                 grid-template-columns: 1fr;
             }
 
-            .info-grid, .stats-grid {
+            .info-grid,
+            .stats-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .profile-section {
+                padding: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .session-header {
+                flex-direction: column;
+                gap: 0.8rem;
             }
         }
     </style>
+
 </head>
+
 <body>
     <header>
         <h1>👤 Mi Perfil</h1>
@@ -226,7 +339,8 @@
                 </div>
                 <div class="info-item">
                     <span class="info-label">Miembro desde</span>
-                    <span class="info-value">{{ $user->created_at ? $user->created_at->format('d \d\e F \d\e Y') : 'N/A' }}</span>
+                    <span
+                        class="info-value">{{ $user->created_at ? $user->created_at->format('d \d\e F \d\e Y') : 'N/A' }}</span>
                 </div>
             </div>
         </div>
@@ -240,15 +354,20 @@
                     <div class="stat-label">Tutorías Completadas</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">{{ $sessions->where('status', '!=', 'cancelled')->where('scheduled_at', '>=', now())->count() }}</div>
+                    <div class="stat-number">
+                        {{ $sessions->where('status', '!=', 'cancelled')->where('scheduled_at', '>=', now())->count() }}
+                    </div>
                     <div class="stat-label">Próximas Tutorías</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">{{ number_format($sessions->where('status', 'completed')->sum('duration') / 60, 1) }}</div>
+                    <div class="stat-number">
+                        {{ number_format($sessions->where('status', 'completed')->sum('duration') / 60, 1) }}</div>
                     <div class="stat-label">Horas de Estudio</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">{{ $sessions->where('status', 'completed')->whereNotNull('rating')->avg('rating') ? number_format($sessions->where('status', 'completed')->whereNotNull('rating')->avg('rating'), 1) : 'N/A' }}</div>
+                    <div class="stat-number">
+                        {{ $sessions->where('status', 'completed')->whereNotNull('rating')->avg('rating') ? number_format($sessions->where('status', 'completed')->whereNotNull('rating')->avg('rating'), 1) : 'N/A' }}
+                    </div>
                     <div class="stat-label">Rating Promedio</div>
                 </div>
             </div>
@@ -260,23 +379,24 @@
             @if ($sessions && count($sessions) > 0)
                 @foreach ($sessions as $session)
                     @if ($session->status === 'completed' && $session->rating)
-                    <div class="session-card">
-                        <div class="session-header">
-                            <div>
-                                <div class="session-title">👨‍🏫 {{ $session->mentor->user->name ?? 'Tutor' }}</div>
-                                @if ($session->subject)
-                                <div style="color: #666; font-size: 0.9rem;">{{ $session->subject->name }}</div>
-                                @endif
+                        <div class="session-card">
+                            <div class="session-header">
+                                <div>
+                                    <div class="session-title">👨‍🏫 {{ $session->mentor->user->name ?? 'Tutor' }}</div>
+                                    @if ($session->subject)
+                                        <div style="color: #666; font-size: 0.9rem;">{{ $session->subject->name }}</div>
+                                    @endif
+                                </div>
+                                <span class="session-status">{{ ucfirst($session->status) }}</span>
                             </div>
-                            <span class="session-status">{{ ucfirst($session->status) }}</span>
+                            <div class="session-details">
+                                <div class="session-detail-item">📅 {{ $session->scheduled_at->format('d/m/Y H:i') }}
+                                </div>
+                                <div class="session-detail-item">⏱️ {{ $session->duration }} min</div>
+                                <div class="session-detail-item">🌐 {{ ucfirst($session->type) }}</div>
+                                <div class="session-detail-item">⭐ {{ $session->rating }}/5</div>
+                            </div>
                         </div>
-                        <div class="session-details">
-                            <div class="session-detail-item">📅 {{ $session->scheduled_at->format('d/m/Y H:i') }}</div>
-                            <div class="session-detail-item">⏱️ {{ $session->duration }} min</div>
-                            <div class="session-detail-item">🌐 {{ ucfirst($session->type) }}</div>
-                            <div class="session-detail-item">⭐ {{ $session->rating }}/5</div>
-                        </div>
-                    </div>
                     @endif
                 @endforeach
             @else
@@ -294,4 +414,5 @@
         </div>
     </div>
 </body>
+
 </html>

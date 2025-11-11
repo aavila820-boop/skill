@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,15 +14,16 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             color: #333;
         }
 
+        /* ========== HEADER CON COLORES UNAB ========== */
         header {
-            background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
+            background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
             color: white;
             padding: 1.5rem 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -42,18 +44,25 @@
             gap: 1rem;
             text-decoration: none;
             color: white;
+            transition: transform 0.3s;
+        }
+
+        .logo-section:hover {
+            transform: scale(1.05);
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: white;
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            color: #0051a5;
+            color: #FF8C00;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
         .nav-right {
@@ -71,17 +80,32 @@
         .nav-links a {
             color: white;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         .logout-btn {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.25);
             color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 5px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            padding: 0.6rem 1.3rem;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            border-color: white;
+            transform: translateY(-2px);
         }
 
         .main-container {
@@ -90,12 +114,16 @@
             padding: 2rem;
         }
 
+        /* Breadcrumb mejorado */
         .breadcrumb {
             background: white;
-            padding: 1rem;
-            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid;
+            border-image: linear-gradient(180deg, #FF8C00, #9B30FF);
+            border-image-slice: 1;
         }
 
         .page-header {
@@ -106,102 +134,147 @@
         }
 
         .page-title {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #0051a5;
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF8C00, #9B30FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .btn {
-            padding: 0.8rem 1.5rem;
-            background: #0051a5;
+            padding: 0.9rem 1.8rem;
+            background: linear-gradient(135deg, #FF8C00, #FFA500);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 10px;
+            font-weight: 700;
             cursor: pointer;
             text-decoration: none;
             display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn:hover {
-            background: #003d7a;
+            background: linear-gradient(135deg, #FFA500, #FF8C00);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
         }
 
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Alertas mejoradas */
         .alert {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid;
+            font-weight: 600;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .alert-success {
-            background: #d4edda;
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
             color: #155724;
+            border-color: #28a745;
         }
 
+        .alert-error {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+            border-color: #e74c3c;
+        }
+
+        /* Grid de sesiones */
         .sessions-list {
             display: grid;
             gap: 1.5rem;
         }
 
+        /* Tarjeta de sesión mejorada */
         .session-card {
             background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-left: 5px solid #0051a5;
+            padding: 1.8rem;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid;
+            border-image: linear-gradient(180deg, #FF8C00, #9B30FF);
+            border-image-slice: 1;
             transition: all 0.3s;
         }
 
         .session-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 81, 165, 0.2);
+            box-shadow: 0 8px 25px rgba(155, 48, 255, 0.2);
+            transform: translateY(-5px);
         }
 
         .session-header {
             display: flex;
             justify-content: space-between;
             align-items: start;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
         .session-title {
-            font-size: 1.2rem;
-            font-weight: bold;
+            font-size: 1.3rem;
+            font-weight: 700;
             color: #333;
         }
 
+        /* Status badges mejorados */
         .session-status {
             display: inline-block;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
             font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         .status-pending {
-            background: #fff3cd;
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
             color: #856404;
         }
 
         .status-confirmed {
-            background: #d4edda;
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
             color: #155724;
         }
 
         .status-completed {
-            background: #d1ecf1;
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
             color: #0c5460;
         }
 
         .status-cancelled {
-            background: #f8d7da;
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
             color: #721c24;
         }
 
+        /* Detalles de sesión */
         .session-details {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
             font-size: 0.95rem;
         }
 
@@ -211,81 +284,104 @@
         }
 
         .detail-label {
-            font-weight: 600;
-            color: #0051a5;
+            font-weight: 700;
+            color: #9B30FF;
             font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.4rem;
         }
 
         .detail-value {
-            color: #666;
-            margin-top: 0.3rem;
+            color: #333;
+            font-weight: 600;
         }
 
+        /* Acciones de sesión */
         .session-actions {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #f0f0f0;
         }
 
         .action-btn {
-            padding: 0.6rem 1rem;
+            padding: 0.7rem 1.2rem;
             border: none;
-            border-radius: 6px;
-            font-weight: 600;
+            border-radius: 10px;
+            font-weight: 700;
             cursor: pointer;
             font-size: 0.9rem;
             transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         .action-btn-primary {
-            background: #0051a5;
+            background: linear-gradient(135deg, #FF8C00, #FFA500);
             color: white;
+            box-shadow: 0 3px 10px rgba(255, 140, 0, 0.25);
         }
 
         .action-btn-primary:hover {
-            background: #003d7a;
+            background: linear-gradient(135deg, #FFA500, #FF8C00);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.35);
         }
 
         .action-btn-danger {
-            background: #dc3545;
+            background: linear-gradient(135deg, #dc3545, #e74c3c);
             color: white;
+            box-shadow: 0 3px 10px rgba(220, 53, 69, 0.25);
         }
 
         .action-btn-danger:hover {
-            background: #c82333;
+            background: linear-gradient(135deg, #e74c3c, #c82333);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.35);
         }
 
         .action-btn-secondary {
-            background: #f0f0f0;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
             color: #333;
+            border: 2px solid #e0e0e0;
         }
 
         .action-btn-secondary:hover {
-            background: #e0e0e0;
+            background: #e8e8e8;
+            border-color: #9B30FF;
+            color: #9B30FF;
+            transform: translateY(-2px);
         }
 
+        /* Empty state mejorado */
         .empty-state {
             text-align: center;
-            padding: 3rem;
+            padding: 3rem 2rem;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
         }
 
         .empty-state-icon {
-            font-size: 3rem;
+            font-size: 4rem;
             margin-bottom: 1rem;
+            opacity: 0.7;
         }
 
         .empty-state-text {
-            color: #666;
-            margin-bottom: 1rem;
+            color: #999;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
         }
 
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
             .page-header {
                 flex-direction: column;
                 gap: 1rem;
+                align-items: flex-start;
             }
 
             .nav-links {
@@ -294,14 +390,30 @@
 
             .session-details {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
 
             .session-actions {
                 flex-direction: column;
             }
+
+            .action-btn {
+                width: 100%;
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .session-header {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
         }
     </style>
+
 </head>
+
 <body>
     <!-- Header -->
     <header>
@@ -327,9 +439,11 @@
 
     <!-- Main content -->
     <div class="main-container">
-        
+
         <div class="breadcrumb">
-            <a href="{{ route('dashboard') }}" style="color: #0051a5; text-decoration: none; font-weight: 500;">Dashboard</a> / <span>Mis Tutorías</span>
+            <a href="{{ route('dashboard') }}"
+                style="color: #0051a5; text-decoration: none; font-weight: 500;">Dashboard</a> / <span>Mis
+                Tutorías</span>
         </div>
 
         <div class="page-header">
@@ -337,85 +451,89 @@
             <a href="{{ route('mentors') }}" class="btn">🔍 Buscar Mentor</a>
         </div>
 
-        @if(session('success'))
-        <div class="alert alert-success">
-            ✅ {{ session('success') }}
-        </div>
+        @if (session('success'))
+            <div class="alert alert-success">
+                ✅ {{ session('success') }}
+            </div>
         @endif
 
-        @if(count($sessions) > 0)
-        <div class="sessions-list">
-            @foreach($sessions as $session)
-            <div class="session-card">
-                <div class="session-header">
-                    <div>
-                        <div class="session-title">
-                            @if($session->student_id === Auth::id())
-                                👨‍🏫 {{ $session->mentor->user->name }}
-                            @else
-                                👨‍💼 {{ $session->student->name }}
+        @if (count($sessions) > 0)
+            <div class="sessions-list">
+                @foreach ($sessions as $session)
+                    <div class="session-card">
+                        <div class="session-header">
+                            <div>
+                                <div class="session-title">
+                                    @if ($session->student_id === Auth::id())
+                                        👨‍🏫 {{ $session->mentor->user->name }}
+                                    @else
+                                        👨‍💼 {{ $session->student->name }}
+                                    @endif
+                                    - {{ $session->subject->name }}
+                                </div>
+                            </div>
+                            <span class="session-status status-{{ $session->status }}">
+                                {{ ucfirst($session->status) }}
+                            </span>
+                        </div>
+
+                        <div class="session-details">
+                            <div class="detail-item">
+                                <span class="detail-label">📅 Fecha y Hora</span>
+                                <span class="detail-value">{{ $session->scheduled_at->format('d/m/Y H:i') }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">⏱️ Duración</span>
+                                <span class="detail-value">{{ $session->duration }} minutos</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">🌐 Tipo</span>
+                                <span class="detail-value">{{ ucfirst($session->type) }}</span>
+                            </div>
+                            @if ($session->rating)
+                                <div class="detail-item">
+                                    <span class="detail-label">⭐ Calificación</span>
+                                    <span class="detail-value">{{ $session->rating }}/5</span>
+                                </div>
                             @endif
-                            - {{ $session->subject->name }}
+                        </div>
+
+                        @if ($session->notes)
+                            <div
+                                style="background: #f9f9f9; padding: 0.8rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem;">
+                                <strong>📝 Notas:</strong> {{ $session->notes }}
+                            </div>
+                        @endif
+
+                        <div class="session-actions">
+                            @if ($session->status === 'pending' && $session->student_id === Auth::id())
+                                <button class="action-btn action-btn-danger"
+                                    onclick="cancelSession({{ $session->id }})">
+                                    ❌ Cancelar
+                                </button>
+                            @endif
+
+                            @if ($session->status === 'completed' && $session->student_id === Auth::id() && !$session->rating)
+                                <button class="action-btn action-btn-primary"
+                                    onclick="rateSession({{ $session->id }})">
+                                    ⭐ Calificar
+                                </button>
+                            @endif
+
+                            <a href="{{ route('session.show', $session->id) }}"
+                                class="action-btn action-btn-secondary">
+                                👁️ Ver Detalles
+                            </a>
                         </div>
                     </div>
-                    <span class="session-status status-{{ $session->status }}">
-                        {{ ucfirst($session->status) }}
-                    </span>
-                </div>
-
-                <div class="session-details">
-                    <div class="detail-item">
-                        <span class="detail-label">📅 Fecha y Hora</span>
-                        <span class="detail-value">{{ $session->scheduled_at->format('d/m/Y H:i') }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">⏱️ Duración</span>
-                        <span class="detail-value">{{ $session->duration }} minutos</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">🌐 Tipo</span>
-                        <span class="detail-value">{{ ucfirst($session->type) }}</span>
-                    </div>
-                    @if($session->rating)
-                    <div class="detail-item">
-                        <span class="detail-label">⭐ Calificación</span>
-                        <span class="detail-value">{{ $session->rating }}/5</span>
-                    </div>
-                    @endif
-                </div>
-
-                @if($session->notes)
-                <div style="background: #f9f9f9; padding: 0.8rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem;">
-                    <strong>📝 Notas:</strong> {{ $session->notes }}
-                </div>
-                @endif
-
-                <div class="session-actions">
-                    @if($session->status === 'pending' && $session->student_id === Auth::id())
-                    <button class="action-btn action-btn-danger" onclick="cancelSession({{ $session->id }})">
-                        ❌ Cancelar
-                    </button>
-                    @endif
-
-                    @if($session->status === 'completed' && $session->student_id === Auth::id() && !$session->rating)
-                    <button class="action-btn action-btn-primary" onclick="rateSession({{ $session->id }})">
-                        ⭐ Calificar
-                    </button>
-                    @endif
-
-                    <a href="{{ route('session.show', $session->id) }}" class="action-btn action-btn-secondary">
-                        👁️ Ver Detalles
-                    </a>
-                </div>
+                @endforeach
             </div>
-            @endforeach
-        </div>
         @else
-        <div class="empty-state">
-            <div class="empty-state-icon">📭</div>
-            <p class="empty-state-text">No tienes tutorías agendadas</p>
-            <a href="{{ route('mentors') }}" class="btn">🔍 Buscar Mentor Ahora</a>
-        </div>
+            <div class="empty-state">
+                <div class="empty-state-icon">📭</div>
+                <p class="empty-state-text">No tienes tutorías agendadas</p>
+                <a href="{{ route('mentors') }}" class="btn">🔍 Buscar Mentor Ahora</a>
+            </div>
         @endif
     </div>
 
@@ -440,4 +558,5 @@
     </script>
 
 </body>
+
 </html>

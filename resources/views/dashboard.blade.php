@@ -14,15 +14,16 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             color: #333;
         }
 
+        /* ========== HEADER CON COLORES UNAB ========== */
         header {
-            background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
+            background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
             color: white;
             padding: 1.5rem 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -41,23 +42,31 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .logo-section:hover {
+            transform: scale(1.05);
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: white;
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            color: #0051a5;
+            color: #FF8C00;
+            font-size: 1.3rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
         .logo-title {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.6rem;
+            font-weight: 800;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .nav-right {
@@ -69,64 +78,78 @@
         .user-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.3);
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #9B30FF, #FF8C00);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
         .logout-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 5px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            padding: 0.6rem 1.3rem;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.35);
+            border-color: white;
+            transform: translateY(-2px);
         }
 
+        /* ========== TABS MEJORADOS ========== */
         .nav-tabs {
             background: white;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 2px solid;
+            border-image: linear-gradient(90deg, #FF8C00, #9B30FF);
+            border-image-slice: 1;
             display: flex;
-            gap: 2rem;
+            gap: 0;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
+            overflow-x: auto;
         }
 
         .nav-tab {
-            padding: 1rem 0;
+            padding: 1.2rem 1.5rem;
             border: none;
             background: none;
             cursor: pointer;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             color: #666;
             border-bottom: 3px solid transparent;
             transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         .nav-tab.active {
-            color: #0051a5;
-            border-bottom-color: #0051a5;
+            color: #FF8C00;
+            border-bottom-color: #FF8C00;
         }
 
         .nav-tab:hover {
-            color: #0051a5;
+            color: #FF8C00;
+            background: rgba(255, 140, 0, 0.05);
         }
 
         .main-container {
@@ -137,29 +160,51 @@
 
         .section {
             display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .section.active {
             display: block;
         }
 
+        /* ========== WELCOME SECTION ========== */
         .welcome-section {
             background: white;
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 15px;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid;
+            border-image: linear-gradient(90deg, #FF8C00, #9B30FF);
+            border-image-slice: 1;
         }
 
         .welcome-title {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            color: #0051a5;
+            font-size: 2.2rem;
+            margin-bottom: 0.8rem;
+            background: linear-gradient(135deg, #FF8C00, #9B30FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
         }
 
         .welcome-subtitle {
             color: #666;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
+            font-weight: 500;
         }
 
         .welcome-buttons {
@@ -169,162 +214,223 @@
         }
 
         .btn {
-            padding: 0.8rem 1.5rem;
+            padding: 0.9rem 1.8rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
+            background: linear-gradient(135deg, #FF8C00, #FFA500);
             color: white;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 81, 165, 0.3);
+            background: linear-gradient(135deg, #FFA500, #FF8C00);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
         }
 
+        /* ========== STATS GRID ========== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+            gap: 1.8rem;
             margin-bottom: 2rem;
         }
 
         .stat-card {
             background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
             text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #FF8C00, #9B30FF);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: #9B30FF;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(155, 48, 255, 0.2);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
 
         .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #0051a5;
-            margin-bottom: 0.5rem;
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF8C00, #9B30FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.8rem;
         }
 
         .stat-label {
             color: #666;
-            font-weight: 500;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: #333;
-            border-bottom: 2px solid #0051a5;
-            padding-bottom: 0.5rem;
+            font-size: 1.8rem;
+            margin-bottom: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF8C00, #9B30FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 2px solid;
+            border-image: linear-gradient(90deg, #FF8C00, #9B30FF);
+            border-image-slice: 1;
+            padding-bottom: 0.8rem;
         }
 
+        /* ========== MENTORS GRID ========== */
         .mentors-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .mentor-card {
             background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
+            border-radius: 15px;
+            padding: 2rem;
             text-align: center;
             border: 2px solid #e0e0e0;
             transition: all 0.3s;
             cursor: pointer;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
         }
 
         .mentor-card:hover {
-            border-color: #0051a5;
-            box-shadow: 0 4px 12px rgba(0, 81, 165, 0.2);
-            transform: translateY(-5px);
+            border-color: #9B30FF;
+            box-shadow: 0 8px 25px rgba(155, 48, 255, 0.2);
+            transform: translateY(-8px);
         }
 
         .mentor-avatar {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #FF8C00, #9B30FF);
             border-radius: 50%;
-            margin: 0 auto 1rem;
+            margin: 0 auto 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 2rem;
+            font-size: 2.5rem;
+            box-shadow: 0 6px 20px rgba(155, 48, 255, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .mentor-card:hover .mentor-avatar {
+            transform: scale(1.1);
         }
 
         .mentor-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 0.3rem;
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 0.4rem;
             color: #333;
         }
 
         .mentor-specialty {
-            color: #0051a5;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
+            color: #FF8C00;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .mentor-subjects {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.6rem;
             justify-content: center;
             margin-bottom: 1rem;
         }
 
         .subject-tag {
-            background: #e3f2fd;
-            color: #0051a5;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #856404;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
             font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .mentor-rating {
-            color: #ff9800;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
+            color: #ffc107;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+            font-size: 1.1rem;
         }
 
         .book-btn {
             width: 100%;
-            padding: 0.8rem;
-            background: #0051a5;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, #FF8C00, #FFA500);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 10px;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 3px 10px rgba(255, 140, 0, 0.25);
         }
 
         .book-btn:hover {
-            background: #003d7a;
+            background: linear-gradient(135deg, #FFA500, #FF8C00);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.35);
         }
 
         .empty-state {
             text-align: center;
-            padding: 2rem;
+            padding: 3rem 2rem;
             color: #999;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
         }
 
         .empty-state-icon {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
+            opacity: 0.7;
         }
 
-        /* Modal Styles */
+        /* ========== MODAL MEJORADO ========== */
         #bookingModal {
             position: fixed;
             z-index: 1000;
@@ -336,40 +442,69 @@
             display: none;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        #bookingModal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
         }
 
         .modal-content {
             background-color: white;
-            padding: 2.5rem;
-            border-radius: 15px;
+            padding: 2.8rem;
+            border-radius: 20px;
             width: 95%;
             max-width: 600px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
             max-height: 90vh;
             overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid #0051a5;
-            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid;
+            border-image: linear-gradient(90deg, #FF8C00, #9B30FF);
+            border-image-slice: 1;
+            padding-bottom: 1.2rem;
         }
 
         .modal-title {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #0051a5;
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF8C00, #9B30FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .modal-close {
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             cursor: pointer;
-            color: #666;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #FF8C00;
         }
 
         .form-group {
@@ -378,8 +513,8 @@
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
             color: #333;
         }
 
@@ -387,67 +522,88 @@
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 0.8rem;
+            padding: 0.95rem 1rem;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border-radius: 12px;
             font-family: inherit;
             font-size: 1rem;
+            transition: all 0.3s;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #0051a5;
-            box-shadow: 0 0 0 3px rgba(0, 81, 165, 0.1);
+            border-color: #FF8C00;
+            box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.1);
+            transform: translateY(-2px);
         }
 
         .mentor-info {
-            background: #f0f7ff;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #0051a5;
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.8rem;
+            border-left: 5px solid #FF8C00;
         }
 
         .mentor-info-label {
             font-size: 0.9rem;
-            color: #666;
+            color: #856404;
+            font-weight: 600;
         }
 
         .mentor-info-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #0051a5;
-            margin-top: 0.3rem;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #FF8C00;
+            margin-top: 0.5rem;
         }
 
         .modal-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
         }
 
         .modal-btn {
-            padding: 0.9rem;
+            padding: 1rem;
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 10px;
+            font-weight: 700;
             cursor: pointer;
             font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
         }
 
         .modal-btn-cancel {
-            background: #f0f0f0;
+            background: #f3f4f6;
             color: #333;
+            border: 2px solid #e0e0e0;
+        }
+
+        .modal-btn-cancel:hover {
+            background: #e0e0e0;
+            border-color: #FF8C00;
+            color: #FF8C00;
         }
 
         .modal-btn-submit {
-            background: linear-gradient(135deg, #0051a5 0%, #003d7a 100%);
+            background: linear-gradient(135deg, #FF8C00, #FFA500);
             color: white;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
         }
 
+        .modal-btn-submit:hover {
+            background: linear-gradient(135deg, #FFA500, #FF8C00);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+        }
+
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
             .header-container {
                 flex-direction: column;
@@ -462,8 +618,22 @@
                 width: 90%;
                 padding: 1.5rem;
             }
+
+            .modal-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                padding: 0 1rem;
+                overflow-x: auto;
+            }
+
+            .nav-tab {
+                padding: 1rem 1rem;
+            }
         }
     </style>
+
 </head>
 
 <body>
@@ -495,6 +665,7 @@
         <button class="nav-tab active" onclick="switchTab('overview', event)">📊 Resumen</button>
         <button class="nav-tab" onclick="switchTab('mentors', event)">👨‍🏫 Buscar Mentores</button>
         <button class="nav-tab" onclick="switchTab('sessions', event)">📅 Mis Tutorías</button>
+        <button class="nav-tab" onclick="switchTab('history', event)">📜 Historial</button>
         <button class="nav-tab" onclick="switchTab('profile', event)">👤 Mi Perfil</button>
     </div>
 
@@ -607,6 +778,52 @@
                 </div>
             @endif
         </div>
+
+        <!-- HISTORY Tab (Tutorías Expiradas) -->
+        <div id="history" class="section">
+            <h2 class="section-title">📜 Historial de Tutorías</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Tutorías que ya pasaron su fecha programada</p>
+
+            @if (count($expiredSessions) > 0)
+                <div style="display: grid; gap: 1rem;">
+                    @foreach ($expiredSessions as $session)
+                        <div
+                            style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #6c757d; opacity: 0.85;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                <div style="font-weight: 600; color: #495057;">
+                                    {{ $session->mentor->user->name }} - {{ $session->subject->name }}
+                                </div>
+                                <span
+                                    style="background: #e9ecef; color: #495057; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                                    {{ ucfirst($session->status) }}
+                                </span>
+                            </div>
+                            <div
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; font-size: 0.9rem; color: #666;">
+                                <div><strong>📅</strong> {{ $session->scheduled_at->format('d/m/Y H:i') }}</div>
+                                <div><strong>⏱️</strong> {{ $session->duration }} min</div>
+                                <div><strong>🌐</strong> {{ ucfirst($session->type) }}</div>
+                                @if ($session->location)
+                                    <div><strong>📍</strong> {{ $session->location }}</div>
+                                @endif
+                            </div>
+
+                            <!-- Badge de expirada -->
+                            <div
+                                style="margin-top: 1rem; padding: 0.6rem; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 6px;">
+                                <strong style="color: #856404;">⚠️ Esta tutoría ya pasó</strong>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="empty-state">
+                    <div class="empty-state-icon">📭</div>
+                    <p>No tienes tutorías expiradas</p>
+                </div>
+            @endif
+        </div>
+
 
         <!-- PROFILE Tab -->
         <div id="profile" class="section">
