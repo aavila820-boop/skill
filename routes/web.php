@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SessionController;
 use App\Models\TutoringSession;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ReviewController;
 
 
 Route::get('/', function () {
@@ -36,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/session/{id}', [SessionController::class, 'show'])->name('session.show');
     Route::put('/session/{id}', [SessionController::class, 'update'])->name('session.update');
     Route::delete('/session/{id}', [SessionController::class, 'destroy'])->name('session.destroy');
+    
 
     Route::get('/profile', function () {
         $user = Auth::user();
@@ -69,5 +71,18 @@ Route::post('/profile/update', function (Request $request) {
 
     return redirect()->route('profile')->with('success', '✅ Perfil actualizado exitosamente');
 })->name('profile.update');
+
+// Ruta para que el estudiante guarde la reseña
+Route::post('/review/store', [ReviewController::class, 'store'])->middleware('auth');
+
+// Ruta para que el mentor consulte sus reseñas y estadísticas
+Route::get('/mentor/{mentorId}/reviews', [ReviewController::class, 'mentorReviews']);
+
+Route::put('/session/{id}', [SessionController::class, 'update'])->name('session.update');
+
+Route::post('/review', [ReviewController::class, 'store'])->name('review.store');
+
+
+
 
 });

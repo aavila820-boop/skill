@@ -437,6 +437,7 @@
                         </div>
                     </div>
 
+
                     <div class="form-divider"></div>
 
                     <div class="form-section">
@@ -446,7 +447,7 @@
                                 <label for="scheduled_date">
                                     Fecha <span class="required">*</span>
                                 </label>
-                                <input type="date" id="scheduled_date" required>
+                                <input type="date" id="scheduled_date" required min="<?php echo date('Y-m-d'); ?>">
                             </div>
                             <div class="form-group">
                                 <label for="scheduled_time">
@@ -457,6 +458,7 @@
                         </div>
                         <input type="hidden" name="scheduled_at" id="scheduled_at">
                     </div>
+
 
                     <div class="form-section">
                         <div class="section-title">⏱️ Duración</div>

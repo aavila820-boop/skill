@@ -63,10 +63,10 @@ class User extends Authenticatable
     /**
      * Verifica si el usuario es tutor
      */
-public function isMentor()
-{
-    return $this->role === 'mentor' && $this->mentor !== null;
-}
+    public function isMentor()
+    {
+        return $this->role === 'mentor' && $this->mentor !== null;
+    }
 
     /**
      * Verifica si el usuario es estudiante
@@ -191,5 +191,21 @@ public function isMentor()
             ->where('status', 'completed')
             ->whereNotNull('rating')
             ->avg('rating');
+    }
+
+    // Relación para obtener reseñas que este usuario recibió como mentor
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'mentor_id');
+    }
+
+    public function getAverageRating()
+    {
+        return $this->reviews()->avg('rating') ?? 0;
+    }
+
+    public function getReviewCount()
+    {
+        return $this->reviews()->count();
     }
 }

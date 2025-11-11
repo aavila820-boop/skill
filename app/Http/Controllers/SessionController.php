@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\TutoringSession;
 use App\Models\Mentor;
 use App\Models\Subject;
+use App\Models\Review;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Migrations\Migration;
+
+
+
 
 class SessionController extends Controller
 {
@@ -26,17 +32,21 @@ class SessionController extends Controller
 {
     $mentorId = $request->query('mentor_id');
     
-    // Si viene un mentor_id, obtenerlo y pre-seleccionarlo
+    // Si viene un mentor_id, obtenerlo CON SUS MATERIAS
     $selectedMentor = null;
     if ($mentorId) {
-        $selectedMentor = Mentor::findOrFail($mentorId);
+        $selectedMentor = Mentor::with('subjects')->findOrFail($mentorId);
     }
     
-    $mentors = Mentor::where('available', true)->with('user')->get();
+    // Obtener todos los mentores disponibles con sus materias
+    $mentors = Mentor::where('available', true)->with(['user', 'subjects'])->get();
+    
+    // ← AGREGA ESTA LÍNEA
     $subjects = Subject::all();
     
     return view('session-book', compact('mentors', 'subjects', 'selectedMentor', 'mentorId'));
 }
+
 
 
     public function store(Request $request)
@@ -44,7 +54,7 @@ class SessionController extends Controller
         $request->validate([
             'mentor_id' => 'required|exists:mentors,id',
             'subject_id' => 'required|exists:subjects,id',
-            'scheduled_at' => 'required|date|after:now',
+            'scheduled_at' => 'required|date|after_or_equal:today',
             'duration' => 'required|integer|min:30|max:180',
             'type' => 'required|in:presencial,virtual',
             'location' => 'nullable|string|max:255',
@@ -61,7 +71,7 @@ class SessionController extends Controller
                 'type' => $request->type,
                 'location' => $request->location,
                 'notes' => $request->notes,
-                'status' => 'pending'
+                'status' => 'pending' // <-- aquí asegúrate que siempre sea 'pending'
             ]);
 
             return redirect()->route('dashboard')->with('success', '✅ ¡Tutoría solicitada exitosamente!');
@@ -70,24 +80,24 @@ class SessionController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+
+   public function update(Request $request, $id)
 {
-    $session = TutoringSession::findOrFail($id);
-    $user = Auth::user();
-
-    // Verificar autorización: Si eres mentor, debes ser el mentor de esta sesión
-    $isMentorOfSession = ($user->mentor && $session->mentor_id == $user->mentor->id);
-    $isStudentOfSession = ($session->student_id == $user->id);
-
-    if (!$isMentorOfSession && !$isStudentOfSession) {
-        return redirect()->back()->with('error', '❌ No tienes permiso para modificar esta sesión');
-    }
-
-    $request->validate([
-        'status' => 'required|in:confirmed,completed,cancelled'
-    ]);
-
     try {
+        $session = TutoringSession::findOrFail($id);
+        $user = Auth::user();
+
+        $isMentorOfSession = ($user->mentor && $session->mentor_id == $user->mentor->id);
+        $isStudentOfSession = ($session->student_id == $user->id);
+
+        if (!$isMentorOfSession && !$isStudentOfSession) {
+            return response()->json(['error' => 'No tienes permiso'], 403);
+        }
+
+        $request->validate([
+            'status' => 'required|in:confirmed,completed,cancelled,rejected'
+        ]);
+
         $updateData = ['status' => $request->status];
 
         if ($request->status === 'completed') {
@@ -96,23 +106,20 @@ class SessionController extends Controller
 
         $session->update($updateData);
 
-        $messages = [
-            'confirmed' => '✅ ¡Tutoría confirmada exitosamente!',
-            'completed' => '✅ ¡Tutoría completada!',
-            'cancelled' => '❌ Tutoría cancelada'
-        ];
+        return response()->json(['success' => true, 'message' => 'Actualizado correctamente']);
 
-        return redirect()->back()->with('success', $messages[$request->status]);
     } catch (\Exception $e) {
-        return back()->with('error', '❌ Error: ' . $e->getMessage());
+        return response()->json(['error' => $e->getMessage()], 500);
     }
 }
+
+
 
 
     public function destroy($id)
     {
         $session = TutoringSession::findOrFail($id);
-        
+
         if ($session->student_id != Auth::id() && $session->mentor_id != Auth::id()) {
             abort(403);
         }

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard Mentor - SkillLink UNAB</title>
     <style>
         * {
@@ -562,9 +563,13 @@
     <div class="nav-tabs">
         <button class="nav-tab active" onclick="switchTab('overview', event)">📊 Resumen</button>
         <button class="nav-tab" onclick="switchTab('tutorings', event)">📚 Por Dar</button>
+        <button class="nav-tab" onclick="switchTab('pendientes', event)">⏳ Pendientes</button>
+        <button class="nav-tab" onclick="switchTab('rechazadas', event)">❌ Rechazadas</button>
         <button class="nav-tab" onclick="switchTab('recibir', event)">👥 Por Recibir</button>
         <button class="nav-tab" onclick="switchTab('mentors', event)">👨‍🏫 Buscar Mentores</button>
+        <button class="nav-tab" onclick="switchTab('received-history', event)">📚 Tutorías Recibidas</button>
         <button class="nav-tab" onclick="switchTab('history', event)">📜 Historial</button>
+        <button class="nav-tab" onclick="switchTab('reviews', event)">⭐ Mis Reseñas</button>
         <button class="nav-tab" onclick="switchTab('profile', event)">👤 Mi Perfil</button>
     </div>
 
@@ -662,15 +667,14 @@
                                         class="action-btn btn-confirm">
                                         ✓ Confirmar
                                     </button>
-                                @endif
-
-                                @if ($tutoring->status === 'confirmed' && $tutoring->scheduled_at < now())
-                                    <button type="button" onclick="completeTutoring({{ $tutoring->id }})"
-                                        class="action-btn btn-complete">
-                                        ✓ Marcar Completada
+                                    <button type="button" onclick="rejectTutoring({{ $tutoring->id }})"
+                                        class="action-btn btn-reject"
+                                        style="background: linear-gradient(135deg, #dc3545, #e74c3c); color: white; margin-left: 0.5rem;">
+                                        ✕ Rechazar
                                     </button>
                                 @endif
                             </div>
+
                         </div>
                     @endforeach
                 </div>
@@ -681,6 +685,124 @@
                 </div>
             @endif
         </div>
+
+        <!-- TUTORÍAS PENDIENTES Tab (Para el mentor) -->
+        <div id="pendientes" class="section">
+            <h2 class="section-title">⏳ Tutorías Pendientes</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Esperando tu confirmación</p>
+
+            @if (count($tutoringsToDo->where('status', 'pending')) > 0)
+                <div class="tutoring-list">
+                    @foreach ($tutoringsToDo->where('status', 'pending') as $tutoring)
+                        <div class="tutoring-card" style="background: #fff8e1; border-left: 5px solid #ffc107;">
+                            <div class="tutoring-header">
+                                <div>
+                                    <div class="tutoring-title">{{ $tutoring->student->name }} -
+                                        {{ $tutoring->subject->name }}</div>
+                                </div>
+                                <span class="tutoring-status"
+                                    style="background: #ffc107; color: #333;">Pendiente</span>
+                            </div>
+
+                            <div class="tutoring-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">📅 Fecha</span>
+                                    <span
+                                        class="detail-value">{{ $tutoring->scheduled_at->format('d/m/Y H:i') }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">⏱️ Duración</span>
+                                    <span class="detail-value">{{ $tutoring->duration }} min</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">🌐 Tipo</span>
+                                    <span class="detail-value">{{ ucfirst($tutoring->type) }}</span>
+                                </div>
+                            </div>
+
+                            @if ($tutoring->notes)
+                                <div style="margin-top: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 8px;">
+                                    <strong style="color: #FF8C00;">📝 Notas del estudiante:</strong>
+                                    <div style="margin-top: 0.5rem; color: #666;">{{ $tutoring->notes }}</div>
+                                </div>
+                            @endif
+
+                            <div class="tutoring-actions">
+                                <button type="button" onclick="confirmTutoring({{ $tutoring->id }})"
+                                    class="action-btn btn-confirm">
+                                    ✓ Confirmar
+                                </button>
+                                <button type="button" onclick="rejectTutoring({{ $tutoring->id }})"
+                                    class="action-btn btn-reject"
+                                    style="background: linear-gradient(135deg, #dc3545, #e74c3c); color: white; margin-left: 0.5rem;">
+                                    ✕ Rechazar
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="empty-state">
+                    <div class="empty-state-icon">✨</div>
+                    <p>No tienes tutorías pendientes de confirmación</p>
+                </div>
+            @endif
+        </div>
+
+        <!-- TUTORÍAS RECHAZADAS Tab (Para el mentor) -->
+        <div id="rechazadas" class="section">
+            <h2 class="section-title">❌ Tutorías Rechazadas</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Tutorías que rechazaste</p>
+
+            @php
+                $rejectedByMentor = $expiredSessions->where('status', 'rejected');
+            @endphp
+
+            @if (count($rejectedByMentor) > 0)
+                <div class="tutoring-list">
+                    @foreach ($rejectedByMentor as $tutoring)
+                        <div class="tutoring-card"
+                            style="background: #fff3cd; opacity: 0.9; border-left: 5px solid #dc3545;">
+                            <div class="tutoring-header">
+                                <div>
+                                    <div class="tutoring-title" style="color: #dc3545;">
+                                        {{ $tutoring->student->name }} - {{ $tutoring->subject->name }}</div>
+                                </div>
+                                <span class="tutoring-status"
+                                    style="background: #dc3545; color: white;">Rechazada</span>
+                            </div>
+
+                            <div class="tutoring-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">📅 Fecha</span>
+                                    <span
+                                        class="detail-value">{{ $tutoring->scheduled_at->format('d/m/Y H:i') }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">⏱️ Duración</span>
+                                    <span class="detail-value">{{ $tutoring->duration }} min</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">🌐 Tipo</span>
+                                    <span class="detail-value">{{ ucfirst($tutoring->type) }}</span>
+                                </div>
+                            </div>
+
+                            <div
+                                style="margin-top: 1rem; padding: 0.6rem; background: #f8d7da; border-left: 4px solid #dc3545; border-radius: 6px;">
+                                <strong style="color: #721c24;">⚠️ Rechazaste esta tutoría</strong>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="empty-state">
+                    <div class="empty-state-icon">✨</div>
+                    <p>No has rechazado ninguna tutoría</p>
+                </div>
+            @endif
+        </div>
+
 
         <!-- POR RECIBIR Tab -->
         <div id="recibir" class="section">
@@ -752,6 +874,30 @@
                             <div class="mentor-avatar">👨‍🏫</div>
                             <div class="mentor-name">{{ $mentor->user->name }}</div>
                             <div class="mentor-specialty">{{ $mentor->program }}</div>
+
+                            <div
+                                style="margin: 1rem 0; padding: 0.8rem; background: #f9f9fa; border-radius: 8px; text-align: center;">
+                                @php
+                                    $avgRating = $mentor->average_rating_calculated;
+                                    $reviewCount = $mentor->review_count;
+                                @endphp
+
+                                <div
+                                    style="display: flex; justify-content: center; gap: 0.2rem; margin-bottom: 0.5rem;">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <span
+                                            style="font-size: 1.2rem; color: {{ $i <= round($avgRating) ? '#FFD700' : '#ddd' }};">★</span>
+                                    @endfor
+                                </div>
+
+                                <div
+                                    style="display: flex; justify-content: center; gap: 0.5rem; align-items: center; font-size: 0.9rem;">
+                                    <strong style="color: #FF8C00;">{{ number_format($avgRating, 1) }}</strong>
+                                    <span style="color: #999;">| {{ $reviewCount }}
+                                        {{ $reviewCount === 1 ? 'reseña' : 'reseñas' }}</span>
+                                </div>
+                            </div>
+
                             <a href="{{ route('session.create', ['mentor_id' => $mentor->id]) }}" class="book-btn"
                                 style="display: inline-block; text-decoration: none; text-align: center;">
                                 📅 Solicitar Tutoría
@@ -767,7 +913,7 @@
             @endif
         </div>
 
-        <!-- 📜 HISTORIAL DE TUTORÍAS EXPIRADAS (AHORA CON ID Y CLASS CORRECTOS) -->
+        <!-- HISTORIAL Tab -->
         <div id="history" class="section">
             <h2 class="section-title">📜 Historial de Tutorías</h2>
             <p style="color: #666; margin-bottom: 1.5rem;">Tutorías que ya pasaron su fecha programada</p>
@@ -815,32 +961,241 @@
                                 </div>
                             @endif
 
-                            <!-- Badge de expirada -->
                             <div
                                 style="margin-top: 1rem; padding: 0.6rem; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 6px;">
                                 <strong style="color: #856404;">⚠️ Esta tutoría ya pasó</strong>
                             </div>
-
-                            <!-- Mostrar reseña si existe -->
-                            @if ($tutoring->rating)
-                                <div
-                                    style="margin-top: 1rem; padding: 1rem; background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%); border-radius: 8px; border-left: 4px solid #FFD700;">
-                                    <strong style="display: block; margin-bottom: 0.5rem; color: #333;">
-                                        Reseña del estudiante: {{ str_repeat('⭐', $tutoring->rating) }}
-                                    </strong>
-                                    <p style="color: #666; margin: 0; font-style: italic;">{{ $tutoring->review }}</p>
-                                </div>
-                            @endif
                         </div>
                     @endforeach
                 </div>
             @else
                 <div class="empty-state">
-                    <div class="empty-state-icon">📭</div>
-                    <p>No tienes tutorías en el historial</p>
+                    <div class="empty-state-icon">📚</div>
+                    <p>No tienes tutorías expiradas</p>
                 </div>
             @endif
         </div>
+
+        <!-- TUTORÍAS RECIBIDAS HISTORIAL Tab -->
+        <div id="received-history" class="section">
+            <h2 class="section-title">📚 Historial de Tutorías Recibidas</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Tutorías que recibiste de otros mentores</p>
+
+            @if (count($receivedSessions) > 0)
+                <div class="tutoring-list">
+                    @foreach ($receivedSessions as $tutoring)
+                        <div class="tutoring-card" style="background: #f0f7ff; border-left: 5px solid #2196F3;">
+                            <div class="tutoring-header">
+                                <div>
+                                    <div class="tutoring-title">{{ $tutoring->mentor->user->name }} -
+                                        {{ $tutoring->subject->name }}</div>
+                                </div>
+                                <span class="tutoring-status"
+                                    style="background: #2196F3; color: white;">Completada</span>
+                            </div>
+
+                            <div class="tutoring-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">📅 Fecha</span>
+                                    <span
+                                        class="detail-value">{{ $tutoring->scheduled_at->format('d/m/Y H:i') }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">⏱️ Duración</span>
+                                    <span class="detail-value">{{ $tutoring->duration }} min</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">🌐 Tipo</span>
+                                    <span class="detail-value">{{ ucfirst($tutoring->type) }}</span>
+                                </div>
+                            </div>
+
+                            @if ($tutoring->notes)
+                                <div style="margin-top: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 8px;">
+                                    <strong style="color: #2196F3;">📝 Notas del tutor:</strong>
+                                    <div style="margin-top: 0.5rem; color: #666;">{{ $tutoring->notes }}</div>
+                                </div>
+                            @endif
+
+                            <!-- FORMULARIO DE RESEÑA -->
+                            @php
+                                $review = $tutoring
+                                    ->reviews()
+                                    ->where('student_id', auth()->id())
+                                    ->first();
+                            @endphp
+
+                            <div class="review-section"
+                                style="margin-top: 1.5rem; border-top: 2px solid #e0e0e0; padding-top: 1.5rem; background: linear-gradient(135deg, #fff9f0 0%, #ffffff 100%); border-radius: 12px;">
+                                <h4 style="color: #FF8C00; font-weight: 700; margin-bottom: 1rem;">⭐ Calificar Tutor
+                                </h4>
+
+                                @if ($review)
+                                    <!-- Mostrar reseña existente -->
+                                    <div
+                                        style="background: #e8f5e9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #4caf50;">
+                                        <div
+                                            style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                            <span style="color: #FFD700; font-size: 1.2rem;">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= $review->rating)
+                                                        ★
+                                                    @else
+                                                        ☆
+                                                    @endif
+                                                @endfor
+                                            </span>
+                                            <strong style="color: #4caf50;"> ({{ $review->rating }}/5)</strong>
+                                        </div>
+                                        <p style="color: #333; margin: 0.5rem 0;">{{ $review->comment }}</p>
+                                        <p style="color: #999; font-size: 0.85rem; margin-top: 0.5rem;">
+                                            Actualizada el {{ $review->updated_at->format('d/m/Y H:i') }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Botón para editar -->
+                                    <button type="button" onclick="toggleReviewForm({{ $tutoring->id }})"
+                                        style="padding: 0.6rem 1rem; background: #2196F3; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%;">
+                                        Editar Reseña
+                                    </button>
+                                @endif
+
+                                <!-- Formulario (oculto si ya existe reseña) -->
+                                <form id="reviewForm-{{ $tutoring->id }}"
+                                    style="display: {{ $review ? 'none' : 'flex' }}; flex-direction: column; gap: 1rem; margin-top: {{ $review ? '1rem' : '0' }};">
+                                    @csrf
+                                    <div class="rating-input" style="display: flex; gap: 0.5rem;">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <button type="button" class="star-btn"
+                                                data-rating="{{ $i }}"
+                                                data-session-id="{{ $tutoring->id }}"
+                                                style="background: none; border: none; font-size: 2rem; cursor: pointer; transition: transform 0.2s;">
+                                                <span
+                                                    style="color: {{ $review && $review->rating >= $i ? '#FFD700' : '#ddd' }}; transition: color 0.2s;">★</span>
+                                            </button>
+                                        @endfor
+                                    </div>
+
+                                    <input type="hidden" name="tutoring_session_id" value="{{ $tutoring->id }}">
+                                    <input type="hidden" name="rating" id="rating-{{ $tutoring->id }}"
+                                        value="{{ $review?->rating ?? 0 }}">
+
+                                    <textarea name="comment" id="comment-{{ $tutoring->id }}" placeholder="Comparte tu experiencia con el mentor..."
+                                        style="padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 8px; min-height: 100px; resize: vertical; transition: all 0.3s; font-family: inherit;"
+                                        onfocus="this.style.borderColor='#FF8C00'; this.style.boxShadow='0 0 0 3px rgba(255,140,0,0.1)'"
+                                        onblur="this.style.borderColor='#e0e0e0'; this.style.boxShadow='none'">{{ $review?->comment }}</textarea>
+
+                                    <div style="display: flex; gap: 1rem;">
+                                        <button type="button" class="submit-review-btn"
+                                            onclick="submitReview({{ $tutoring->id }})"
+                                            style="flex: 1; padding: 0.8rem; background: linear-gradient(135deg, #FF8C00, #FFA500); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: transform 0.2s;"
+                                            onmouseover="this.style.transform='scale(1.02)'"
+                                            onmouseout="this.style.transform='scale(1)'">
+                                            Enviar Reseña
+                                        </button>
+                                        @if ($review)
+                                            <button type="button" onclick="toggleReviewForm({{ $tutoring->id }})"
+                                                style="flex: 1; padding: 0.8rem; background: #999; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">
+                                                Cancelar
+                                            </button>
+                                        @endif
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="empty-state">
+                    <div class="empty-state-icon">📚</div>
+                    <p>No has recibido tutorías aún</p>
+                </div>
+            @endif
+        </div>
+
+
+
+        <!-- MIS RESEÑAS Tab -->
+        <div id="reviews" class="section">
+            <h2 class="section-title">⭐ Mis Reseñas</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Calificaciones y comentarios de tus estudiantes</p>
+
+            @if (count($mentorReviews) > 0)
+                <!-- Stats General -->
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                    @php
+                        $promedioRating = $mentorReviews->avg('rating');
+                    @endphp
+
+                    <div
+                        style="background: linear-gradient(135deg, #FF8C00, #FFA500); color: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700;">{{ number_format($promedioRating, 1) }}
+                        </div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Calificación Promedio</div>
+                    </div>
+
+                    <div
+                        style="background: linear-gradient(135deg, #4CAF50, #66BB6A); color: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700;">{{ $mentorReviews->count() }}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Total de Reseñas</div>
+                    </div>
+
+                    <div
+                        style="background: linear-gradient(135deg, #2196F3, #42A5F5); color: white; padding: 1.5rem; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 2.5rem; font-weight: 700;">
+                            @php
+                                $filledStars = round($promedioRating);
+                            @endphp
+                            @for ($i = 1; $i <= 5; $i++)
+                                <span style="font-size: 1.5rem;">{{ $i <= $filledStars ? '★' : '☆' }}</span>
+                            @endfor
+                        </div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Estrellas Promedio</div>
+                    </div>
+                </div>
+
+                <!-- Reseñas -->
+                <div style="display: grid; gap: 1rem;">
+                    @foreach ($mentorReviews as $review)
+                        <div
+                            style="background: white; padding: 1.5rem; border-radius: 12px; border-left: 4px solid #FF8C00; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <div style="display: flex; gap: 0.2rem; margin-bottom: 0.5rem;">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <span
+                                                style="font-size: 1.3rem; color: {{ $i <= $review->rating ? '#FFD700' : '#ddd' }};">★</span>
+                                        @endfor
+                                    </div>
+                                    <span style="color: #999; font-size: 0.85rem;">
+                                        {{ $review->created_at->format('d/m/Y H:i') }}
+                                    </span>
+                                </div>
+
+                                <span
+                                    style="background: #E3F2FD; color: #1976D2; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                                    👤 Anónimo
+                                </span>
+                            </div>
+
+                            <p style="margin: 0; color: #333; line-height: 1.6; font-size: 0.95rem;">
+                                "{{ $review->comment }}"
+                            </p>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="empty-state" style="text-align: center; padding: 3rem 1rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⭐</div>
+                    <p style="font-size: 1.1rem; color: #999;">Aún no tienes reseñas</p>
+                    <p style="color: #bbb; font-size: 0.9rem;">Cuando tus estudiantes completen tutorías y dejen
+                        reseñas, aparecerán aquí</p>
+                </div>
+            @endif
+        </div>
+
 
         <!-- PROFILE Tab -->
         <div id="profile" class="section">
@@ -876,8 +1231,75 @@
 
     </div>
 
-
     <script>
+        // Event listeners para las estrellas
+        document.querySelectorAll('.star-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const rating = this.dataset.rating;
+                const sessionId = this.dataset.sessionId;
+                document.getElementById(`rating-${sessionId}`).value = rating;
+
+                // Actualizar color de estrellas
+                document.querySelectorAll(`.star-btn[data-session-id="${sessionId}"]`).forEach((star,
+                    index) => {
+                        if (index < rating) {
+                            star.querySelector('span').style.color = '#FFD700';
+                        } else {
+                            star.querySelector('span').style.color = '#ddd';
+                        }
+                    });
+            });
+        });
+
+        function toggleReviewForm(sessionId) {
+            const form = document.getElementById(`reviewForm-${sessionId}`);
+            if (form.style.display === 'none') {
+                form.style.display = 'flex';
+            } else {
+                form.style.display = 'none';
+            }
+        }
+
+        function submitReview(sessionId) {
+            const rating = document.getElementById(`rating-${sessionId}`).value;
+            const comment = document.getElementById(`comment-${sessionId}`).value;
+
+            if (!rating || rating == 0) {
+                alert('Por favor selecciona una calificación');
+                return;
+            }
+
+            if (!comment.trim()) {
+                alert('Por favor escribe un comentario');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('tutoring_session_id', sessionId);
+            formData.append('rating', rating);
+            formData.append('comment', comment);
+            formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+
+            fetch('{{ route('review.store') }}', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('✅ Reseña enviada exitosamente');
+                        location.reload();
+                    } else {
+                        alert('❌ Error: ' + (data.error || 'Error al enviar reseña'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al enviar reseña');
+                });
+        }
+
         function switchTab(tabName, event) {
             event.preventDefault();
 
@@ -893,7 +1315,6 @@
             event.target.classList.add('active');
         }
 
-        // ✅ CONFIRMAR TUTORÍA
         function confirmTutoring(tutoringId) {
             fetch(`/session/${tutoringId}`, {
                     method: 'PUT',
@@ -908,12 +1329,44 @@
                 .then(response => {
                     if (response.ok) {
                         location.reload();
+                    } else {
+                        alert('Error al confirmar');
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error: ' + error);
+                });
         }
 
-        // ✓ MARCAR COMO COMPLETADA
+        function rejectTutoring(tutoringId) {
+            if (confirm('¿Estás seguro de que quieres rechazar esta tutoría?')) {
+                fetch(`/session/${tutoringId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            status: 'rejected'
+                        })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            alert('Error al rechazar');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error: ' + error);
+                    });
+            }
+        }
+
+
+
         function completeTutoring(tutoringId) {
             fetch(`/session/${tutoringId}`, {
                     method: 'PUT',
@@ -934,5 +1387,6 @@
         }
     </script>
 </body>
+
 
 </html>

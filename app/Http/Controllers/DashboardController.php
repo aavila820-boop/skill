@@ -6,6 +6,10 @@ use App\Models\Mentor;
 use App\Models\TutoringSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Review;
+use Illuminate\Support\Facades\DB;
+use App\Models\Subject;
+use Illuminate\Database\Migrations\Migration;
 
 class DashboardController extends Controller
 {
@@ -30,23 +34,41 @@ class DashboardController extends Controller
     {
         $now = now();
 
-        // Separar tutorías activas (futuras o de hoy) vs expiradas (pasadas)
+        // Tutorías activas (futuras o de hoy)
         $upcomingSessions = TutoringSession::where('student_id', $user->id)
-            ->where('scheduled_at', '>=', $now)
+            ->whereDate('scheduled_at', '>=', today()) // ← CAMBIADO: Compara solo fecha
+            ->whereIn('status', ['pending', 'confirmed'])
             ->with(['mentor.user', 'subject'])
             ->orderBy('scheduled_at', 'asc')
             ->get();
 
+        // Actualizar status de sesiones pasadas
+        TutoringSession::where('student_id', $user->id)
+            ->where('scheduled_at', '<', $now)
+            ->where('status', 'confirmed')
+            ->update(['status' => 'completed']);
+
+        // Sesiones expiradas/completadas
         $expiredSessions = TutoringSession::where('student_id', $user->id)
             ->where('scheduled_at', '<', $now)
+            ->with(['mentor.user', 'subject', 'reviews'])
+            ->orderBy('scheduled_at', 'desc')
+            ->get();
+
+        // Tutorías rechazadas ← NUEVO
+        $rejectedSessions = TutoringSession::where('student_id', $user->id)
+            ->where('status', 'rejected')
             ->with(['mentor.user', 'subject'])
             ->orderBy('scheduled_at', 'desc')
             ->get();
 
         // Buscar mentores disponibles
-        $mentors = Mentor::with(['user', 'subjects'])
+        $mentors = Mentor::with(['user', 'subjects', 'reviews'])
             ->where('user_id', '!=', $user->id)
             ->get();
+
+        // Obtener todas las materias
+        $subjects = Subject::all();
 
         // Stats
         $completedSessions = TutoringSession::where('student_id', $user->id)
@@ -66,7 +88,9 @@ class DashboardController extends Controller
             'user',
             'upcomingSessions',
             'expiredSessions',
+            'rejectedSessions',      // ← NUEVO
             'mentors',
+            'subjects',
             'completedSessions',
             'totalHours',
             'averageRating'
@@ -81,22 +105,28 @@ class DashboardController extends Controller
         $mentor = $user->mentor;
         $now = now();
 
-        // Tutorías que tiene que dar (pending o confirmed Y FUTURAS)
+        // Tutorías por dar (pending o confirmed - hoy o futuro)
         $tutoringsToDo = TutoringSession::where('mentor_id', $mentor->id)
             ->whereIn('status', ['pending', 'confirmed'])
-            ->where('scheduled_at', '>=', $now)
+            ->whereDate('scheduled_at', '>=', today())
             ->with(['student', 'subject'])
             ->orderBy('scheduled_at', 'asc')
             ->get();
 
-        // Tutorías EXPIRADAS (ya pasaron de fecha)
+        // Actualizar status de sesiones pasadas
+        TutoringSession::where('mentor_id', $mentor->id)
+            ->where('scheduled_at', '<', $now)
+            ->where('status', 'confirmed')
+            ->update(['status' => 'completed']);
+
+        // Tutorías expiradas (pasadas)
         $expiredSessions = TutoringSession::where('mentor_id', $mentor->id)
             ->where('scheduled_at', '<', $now)
-            ->with(['student', 'subject'])
+            ->with(['student', 'subject', 'reviews'])
             ->orderBy('scheduled_at', 'desc')
             ->get();
 
-        // Tutorías completadas
+        // Tutorías completadas (contador)
         $completedSessions = TutoringSession::where('mentor_id', $mentor->id)
             ->where('status', 'completed')
             ->count();
@@ -112,16 +142,33 @@ class DashboardController extends Controller
             ->whereNotNull('rating')
             ->avg('rating');
 
-        // Tutorías que voy a RECIBIR como estudiante
+        // Tutorías que recibe como estudiante
         $tutoriasARecibir = TutoringSession::where('student_id', $user->id)
-            ->where('scheduled_at', '>=', $now)
+            ->whereDate('scheduled_at', '>=', today())
             ->with(['mentor.user', 'subject'])
             ->orderBy('scheduled_at', 'asc')
             ->get();
 
-        // Otros mentores disponibles (para que también puedan solicitar)
+        // ← NUEVO: Tutorías recibidas (historiales/completadas como estudiante)
+        $receivedSessions = TutoringSession::where('student_id', $user->id)
+            ->where('status', 'completed')
+            ->with(['mentor.user', 'subject', 'reviews'])
+            ->orderBy('scheduled_at', 'desc')
+            ->get();
+
+        // Otros mentores disponibles
         $mentors = Mentor::where('user_id', '!=', $user->id)
-            ->with(['user', 'subjects'])
+            ->with(['user', 'subjects', 'reviews'])
+            ->get();
+
+        // Reseñas del mentor
+        $mentorReviews = Review::whereIn(
+            'tutoring_session_id',
+            $mentor->sessions()
+                ->where('status', 'completed')
+                ->pluck('id')
+        )
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view('mentor-dashboard', compact(
@@ -133,7 +180,9 @@ class DashboardController extends Controller
             'totalHours',
             'averageRating',
             'tutoriasARecibir',
-            'mentors'
+            'receivedSessions',  // ← NUEVO
+            'mentors',
+            'mentorReviews'
         ));
     }
 }
